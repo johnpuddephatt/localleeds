@@ -7,11 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\UuidTrait;
 use Carbon\Carbon;
+use App\Traits\GeographicalTrait;
+use GuzzleHttp\Client;
 
 class Service extends Model
 {
     use HasFactory, SoftDeletes;
     use UuidTrait;
+    use GeographicalTrait;
 
     public static function boot()
     {
@@ -49,7 +52,7 @@ class Service extends Model
      * @var array
      */
     protected $casts = [
-        "assured_date" => "date",
+        "assured_date" => "date:nS F Y",
     ];
 
     public function taxonomies()
@@ -60,6 +63,11 @@ class Service extends Model
     public function locations()
     {
         return $this->belongsToMany(Location::class);
+    }
+
+    public function addresses()
+    {
+        return $this->hasManyThrough(PhysicalAddress::class, Location::class);
     }
 
     public function fundings()
@@ -173,7 +181,7 @@ class Service extends Model
         $this->locations()->detach();
 
         foreach ($locations as $location) {
-            $new_location = $this->locations()->firstOrCreate(
+            $new_location = $this->locations()->updateOrCreate(
                 [
                     "id" => $location["id"] ?? null,
                 ],
@@ -188,5 +196,76 @@ class Service extends Model
                 ->physicalAddress()
                 ->create($location["physical_address"]);
         }
+    }
+
+    public function scopeJoinLocations($query)
+    {
+        return $query
+            ->join("location_service", "id", "=", "location_service.service_id")
+            ->join(
+                "locations",
+                "locations.id",
+                "=",
+                "location_service.location_id"
+            );
+    }
+
+    public function scopeServiceDistance($query, $latitude, $longitude)
+    {
+        return $query
+            ->joinLocations()
+            ->distance($latitude, $longitude, [
+                "table" => "locations",
+            ])
+            ->orderBy("distance");
+    }
+
+    public function scopeFreeFilter($query)
+    {
+        return $query->doesntHave("costOptions");
+    }
+
+    public function scopePostcodeFilter($query, $postcode, $distance)
+    {
+        $client = new Client(["http_errors" => false]);
+        $postcodesIoResponse = $client->request(
+            "GET",
+            "https://api.postcodes.io/postcodes/" . $postcode
+        );
+
+        if ($postcodesIoResponse->getStatusCode() == 200) {
+            $postcodesIoResult = json_decode(
+                $postcodesIoResponse->getBody(),
+                true
+            )["result"];
+
+            return $query
+                ->join(
+                    "location_service",
+                    "id",
+                    "=",
+                    "location_service.service_id"
+                )
+                ->join(
+                    "locations",
+                    "locations.id",
+                    "=",
+                    "location_service.location_id"
+                )
+                ->geofence(
+                    $postcodesIoResult["latitude"],
+                    $postcodesIoResult["longitude"],
+                    0,
+                    $distance,
+                    [
+                        "table" => "locations",
+                    ]
+                )
+                ->orderBy("distance");
+        }
+
+        session()->flash("flash.banner", "Postcode not found.");
+        session()->flash("flash.bannerStyle", "danger");
+        redirect(route("service.index"))->send();
     }
 }

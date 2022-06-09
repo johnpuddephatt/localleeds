@@ -12,12 +12,17 @@
         "guzzlehttp/guzzle": "^7.2",
         "inertiajs/inertia-laravel": "^0.5.2",
         "intervention/image": "^2.7",
+        "itsgoingd/clockwork": "^5.1",
         "laravel/framework": "^9.11",
         "laravel/jetstream": "^2.8",
+        "laravel/nova": "~4.0",
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
-        "tightenco/ziggy": "^1.0",
-        "laravel/nova": "~4.0"
+        "madewithlove/laravel-nova-uuid-support": "^1.4",
+        "malhal/laravel-geographical": "^1.0",
+        "outl1ne/nova-settings": "^5.0",
+        "simonhamp/laravel-nova-csv-import": "^0.6.4",
+        "tightenco/ziggy": "^1.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

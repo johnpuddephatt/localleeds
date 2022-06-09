@@ -5,6 +5,9 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
+use Laravel\Nova\Panel;
+use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Image;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
@@ -16,6 +19,37 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function boot()
     {
         parent::boot();
+
+        \Outl1ne\NovaSettings\NovaSettings::addSettingsFields(
+            [
+                Panel::make("Position one", [
+                    Select::make("Category", "featured_category_0")->options(
+                        \App\Models\Taxonomy::where("type", "service_category")
+                            ->get()
+                            ->pluck("name", "id")
+                    ),
+                    Image::make("Image", "featured_category_0_image"),
+                ]),
+                Panel::make("Position two", [
+                    Select::make("Category", "featured_category_1")->options(
+                        \App\Models\Taxonomy::where("type", "service_category")
+                            ->get()
+                            ->pluck("name", "id")
+                    ),
+                    Image::make("Image", "featured_category_1_image"),
+                ]),
+                Panel::make("Position three", [
+                    Select::make("Category", "featured_category_2")->options(
+                        \App\Models\Taxonomy::where("type", "service_category")
+                            ->get()
+                            ->pluck("name", "id")
+                    ),
+                    Image::make("Image", "featured_category_2_image"),
+                ]),
+            ],
+            [],
+            "Featured categories"
+        );
     }
 
     /**
@@ -62,7 +96,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function tools()
     {
-        return [];
+        return [new \Outl1ne\NovaSettings\NovaSettings()];
     }
 
     /**

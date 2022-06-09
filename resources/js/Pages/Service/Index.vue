@@ -1,169 +1,280 @@
 <script setup>
-import { ref } from "vue";
+import Pagination from "@/Components/Pagination";
+import { reactive, computed } from "vue";
+import { useForm, Head, Link } from "@inertiajs/inertia-vue3";
+import FrontendLayout from "@/Layouts/FrontendLayout.vue";
+import IndexTitle from "@/Components/IndexTitle.vue";
+import ServicesMap from "@/Components/ServicesMap.vue";
 
-import AppLayout from "@/Layouts/AppLayout.vue";
-import Welcome from "@/Jetstream/Welcome.vue";
-import InertiaButton from "@/Jetstream/InertiaButton.vue";
-import Button from "@/Jetstream/Button.vue";
-import JetDialogModal from "@/Jetstream/DialogModal.vue";
-import JetSecondaryButton from "@/Jetstream/SecondaryButton.vue";
-import { Link } from "@inertiajs/inertia-vue3";
-
-defineProps({
-    services: Array,
-    organisations: Array,
+let props = defineProps({
+    view: String,
+    services: Object,
+    filters: Object,
 });
 
-const selectingOrganisation = ref(false);
+const form = useForm({
+    postcode: props.filters.postcode?.toUpperCase() ?? null,
+    service_category: "",
+    service_user: "",
+    distance: 3,
+    free: props.filters.free ?? false,
+});
 
-const selectOrganisation = () => {
-    selectingOrganisation.value = true;
+const submitForm = () => {
+    form.transform((data) => cleanupParameters(data)).get(
+        route("service.index", { view: props.view }),
+        { preserveScroll: true }
+    );
 };
 
-const closeModal = () => {
-    selectingOrganisation.value = false;
+const cleanupParameters = (parameters) => {
+    return Object.fromEntries(
+        Object.entries(parameters)
+            .filter(([_, v]) => v)
+            .filter(([_, v]) => !(_ == "distance" && form.postcode == null))
+            .filter(([_, v]) => !(_ == "page"))
+    );
 };
+
+const totalServices = computed(() => {
+    return props.view == "map" ? props.services.length : props.services.total;
+});
 </script>
 
 <template>
-    <AppLayout title="Services">
-        <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                Services
-            </h2>
+    <FrontendLayout title="Welcome">
+        <svg-vue
+            class="pointer-events-none absolute right-0 top-[6.5rem] w-48 md:w-72"
+            icon="searchindex_hero-upper-right"
+        ></svg-vue>
+        <svg-vue
+            class="top-12vh pointer-events-none absolute left-0 w-24 md:top-[35vh] md:w-60"
+            icon="searchindex_hero-lower-left"
+        ></svg-vue>
+        <div
+            class="container relative my-16 min-h-screen space-y-8 pt-56 xl:max-w-4xl"
+        >
+            <IndexTitle :filters="filters" />
 
-            <Button @click.prevent="selectOrganisation" class="-my-2 ml-auto"
-                >Add a new service
-            </Button>
-        </template>
-
-        <div class="py-12">
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <div
-                    v-if="!services.length"
-                    class="flex h-96 items-center justify-center overflow-hidden bg-white shadow-xl sm:rounded-lg"
-                >
-                    <p class="text-gray-400">No services to show you.</p>
-                </div>
-                <table
-                    v-else
-                    class="min-w-full table-fixed divide-y divide-gray-200 overflow-hidden rounded border shadow dark:divide-gray-700"
-                >
-                    <thead class="bg-gray-200 dark:bg-gray-700">
-                        <tr>
-                            <th scope="col" class="p-4">
-                                <div class="flex items-center">
-                                    <input
-                                        id="checkbox-all"
-                                        type="checkbox"
-                                        class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
-                                    />
-                                    <label for="checkbox-all" class="sr-only"
-                                        >checkbox</label
-                                    >
-                                </div>
-                            </th>
-                            <th
-                                scope="col"
-                                class="py-3 px-6 text-left text-xs font-medium uppercase tracking-wider text-gray-700 dark:text-gray-400"
-                            >
-                                Service name
-                            </th>
-                            <th
-                                scope="col"
-                                class="py-3 px-6 text-left text-xs font-medium uppercase tracking-wider text-gray-700 dark:text-gray-400"
-                            >
-                                ???
-                            </th>
-                            <th
-                                scope="col"
-                                class="py-3 px-6 text-left text-xs font-medium uppercase tracking-wider text-gray-700 dark:text-gray-400"
-                            >
-                                ???
-                            </th>
-                            <th scope="col" class="p-4">
-                                <span class="sr-only">Edit</span>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody
-                        class="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800"
+            <form @submit.prevent="submitForm" class="relative space-y-8">
+                <div class="rounded-2xl bg-blue-200 p-12">
+                    <div
+                        class="flex flex-row flex-wrap items-center gap-4 md:flex-nowrap md:gap-6"
                     >
-                        <tr
-                            v-for="service in services"
-                            class="hover:bg-gray-100 dark:hover:bg-gray-700"
+                        <p class="font-semibold">Show services within</p>
+                        <select
+                            class="w-full border-none px-6 py-4 md:w-1/6"
+                            v-model="form.distance"
+                            aria-label="Maximum distance from postcode"
                         >
-                            <td class="w-4 p-4">
-                                <div class="flex items-center">
-                                    <input
-                                        id="checkbox-table-1"
-                                        type="checkbox"
-                                        class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
-                                    />
-                                    <label
-                                        for="checkbox-table-1"
-                                        class="sr-only"
-                                        >checkbox</label
-                                    >
-                                </div>
-                            </td>
-                            <td
-                                class="whitespace-nowrap py-4 px-6 text-sm font-medium text-gray-900 dark:text-white"
-                            >
-                                {{ service.name }}
-                            </td>
-                            <td
-                                class="whitespace-nowrap py-4 px-6 text-sm font-medium text-gray-500 dark:text-white"
-                            >
-                                ???
-                            </td>
-                            <td
-                                class="whitespace-nowrap py-4 px-6 text-sm font-medium text-gray-900 dark:text-white"
-                            >
-                                <span
-                                    class="rounded-full bg-gray-200 px-3 py-1 text-xs"
-                                    >???</span
-                                >
-                            </td>
-                            <td
-                                class="whitespace-nowrap py-4 px-6 text-right text-sm font-medium"
-                            >
-                                <Link
-                                    :href="
-                                        route('service.edit', {
-                                            id: service.id,
-                                        })
-                                    "
-                                    class="text-blue-600 hover:underline dark:text-blue-500"
-                                    >Edit</Link
-                                >
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <JetDialogModal :show="selectingOrganisation" @close="closeModal">
-            <template #title> Select organisation </template>
-
-            <template #content>
-                <Link
-                    class="mb-2 block rounded border py-4 text-center"
-                    v-for="organisation in organisations"
-                    :href="
-                        route('service.create', {
-                            organisation: organisation.id,
-                        })
-                    "
-                    >{{ organisation.name }}</Link
+                            <option value="1">1 mile</option>
+                            <option value="2" selected>2 miles</option>
+                            <option value="3">3 miles</option>
+                            <option value="4">4 miles</option>
+                            <option value="5">5 miles</option>
+                            <option value="10">10 miles</option>
+                        </select>
+                        <p class="font-semibold">of</p>
+                        <input
+                            required
+                            aria-label="Postcode"
+                            class="border-none px-6 py-4 md:w-1/4"
+                            v-model="form.postcode"
+                            type="text"
+                            placeholder="Enter a postcode..."
+                        />
+                        <input
+                            class="rounded-2xl bg-blue-300 px-10 py-3 font-bold text-white"
+                            value="Search"
+                            type="submit"
+                        />
+                    </div>
+                </div>
+                <div
+                    class="flex flex-col gap-4 rounded-2xl bg-blue-200 p-12 md:flex-row md:gap-8"
                 >
+                    <select
+                        class="border-none px-6 py-4 md:w-1/3"
+                        v-model="form.service_category"
+                    >
+                        <option value="" selected>All categories</option>
+                        <option value="mental_health">Mental health</option>
+                        <option value="food_banks">Food banks</option>
+                    </select>
+
+                    <select
+                        class="border-none px-6 py-4 md:w-1/3"
+                        v-model="form.service_user"
+                    >
+                        <option value="" selected>All people</option>
+                        <option value="young_people">Young people</option>
+                        <option value="older_people">Older people</option>
+                    </select>
+
+                    <label class="py-4"
+                        ><input
+                            @change.prevent="submitForm"
+                            class="mr-2"
+                            type="checkbox"
+                            v-model="form.free"
+                        />
+                        Only show free services</label
+                    >
+                </div>
+            </form>
+
+            <div
+                class="flex flex-col items-center justify-between gap-4 pt-32 md:flex-row"
+                id="results"
+            >
+                <h2 class="text-2xl font-semibold">
+                    Found:
+                    <span class="text-green-200"
+                        >{{ totalServices }}
+                        {{ totalServices == 1 ? "service" : "services" }}</span
+                    >
+                </h2>
+
+                <nav class="flex flex-row gap-2 text-lg">
+                    <Link
+                        :href="
+                            route(
+                                'service.index',
+                                cleanupParameters(props.filters)
+                            ) + '#results'
+                        "
+                        class="rounded-2xl px-4 py-2 font-semibold"
+                        :class="{ 'bg-blue-100': view == 'list' }"
+                    >
+                        List view
+
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="ml-1 -mt-0.5 inline-block h-6 w-6 opacity-60"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M4 6h16M4 10h16M4 14h16M4 18h16"
+                            />
+                        </svg>
+                    </Link>
+                    <Link
+                        :href="
+                            route('service.index', {
+                                ...cleanupParameters(props.filters),
+                                view: 'map',
+                            }) + '#results'
+                        "
+                        class="rounded-2xl px-4 py-2 font-semibold"
+                        :class="{ 'bg-blue-100': view == 'map' }"
+                    >
+                        Map view
+
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="ml-1 -mt-1 inline-block h-6 w-6 opacity-60"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                            />
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                            />
+                        </svg>
+                    </Link>
+                </nav>
+            </div>
+
+            <template v-if="view == 'list'">
+                <Link
+                    :href="route('service.show', { id: service.id })"
+                    v-for="service in services.data"
+                    class="flex flex-col justify-between gap-4 rounded-lg bg-blue-100 p-8 md:flex-row"
+                >
+                    <div>
+                        <h3 class="text-xl font-semibold leading-tight">
+                            {{ service.name }}
+                        </h3>
+                        <div class="mt-1 text-lg font-semibold text-green-300">
+                            {{ service.organisation }}
+                        </div>
+                    </div>
+                    <div
+                        class="ml-auto flex flex-none flex-row gap-2 md:ml-0 md:gap-4"
+                    >
+                        <div
+                            v-if="!service.cost_options_count"
+                            class="font-semibold text-green-300"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="ml-1 -mt-1 inline-block h-6 w-6 text-green-200 opacity-80"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                stroke-width="2"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M15 9a2 2 0 10-4 0v5a2 2 0 01-2 2h6m-6-4h4m8 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                                />
+                            </svg>
+                            Free
+                        </div>
+                        <div
+                            v-if="service.distance"
+                            class="font-semibold text-green-300"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="ml-1 -mt-1 inline-block h-6 w-6 text-green-200 opacity-80"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                stroke-width="2"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                                />
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                                />
+                            </svg>
+                            {{ service.distance }} miles away
+                        </div>
+                    </div>
+                </Link>
+                <pagination :links="services.links" />
             </template>
 
-            <template #footer>
-                <JetSecondaryButton @click="closeModal">
-                    Cancel
-                </JetSecondaryButton>
-            </template>
-        </JetDialogModal>
-    </AppLayout>
+            <div v-if="view == 'map'">
+                <services-map :services="services" />
+            </div>
+
+            <svg-vue
+                class="pointer-events-none absolute left-[100%] top-[100%] w-24"
+                icon="searchindex-bottom-right"
+            ></svg-vue>
+        </div>
+    </FrontendLayout>
 </template>
+
+<style scoped></style>

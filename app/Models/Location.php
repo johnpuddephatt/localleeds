@@ -20,6 +20,8 @@ class Location extends Model
      */
     protected $fillable = ["name", "description", "latitude", "longitude"];
 
+    protected $with = ["physicalAddress"];
+
     /**
      * The attributes that should be cast to native types.
      *
@@ -30,10 +32,10 @@ class Location extends Model
         "longitude" => "double",
     ];
 
-    public function organsations()
-    {
-        return $this->belongsToMany(Organsation::class);
-    }
+    // public function organisations()
+    // {
+    //     return $this->belongsToMany(Organsation::class);
+    // }
 
     public function services()
     {

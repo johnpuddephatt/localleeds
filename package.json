@@ -20,6 +20,8 @@
         "@vue/compiler-sfc": "^3.2.31",
         "@vue/server-renderer": "^3.2.31",
         "axios": "^0.25",
+        "browser-sync": "^2.27.10",
+        "browser-sync-webpack-plugin": "^2.3.0",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
         "postcss": "^8.1.14",
@@ -34,6 +36,9 @@
         "@headlessui/vue": "^1.6.3",
         "@heroicons/vue": "^1.0.6",
         "croppie": "^2.6.5",
+        "laravel-mix-svg-vue": "^0.4.1",
+        "laravel-vue-pagination": "^3.0.0",
+        "leaflet": "^1.8.0",
         "uuid": "^8.3.2"
     }
 }

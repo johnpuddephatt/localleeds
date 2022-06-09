@@ -179,6 +179,21 @@ const openAccreditationModal = (key) => {
     currentlyEditingAccreditation.value =
         key ?? accreditationOptions.value.length - 1;
     addingAccreditationNumber.value = true;
+
+    if (
+        accreditationOptions.value[currentlyEditingAccreditation.value].date
+            .length > 10
+    ) {
+        let formattedDate = new Date(
+            accreditationOptions.value[currentlyEditingAccreditation.value].date
+        );
+
+        console.log(formattedDate);
+        accreditationOptions.value[currentlyEditingAccreditation.value].date =
+            formattedDate.toISOString().split("T")[0];
+
+        console.log(formattedDate.toISOString().split("T")[0]);
+    }
 };
 
 const cancelAccreditationModal = () => {

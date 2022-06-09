@@ -21,9 +21,50 @@
         <script>
             window.google_maps_key = "{{ env('GOOGLE_MAPS_API_KEY') }}";
         </script>
+        <script
+            type="text/javascript"
+            src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+        ></script>
+
+        <script>
+            function googleTranslateElementInit() {
+                new google.translate.TranslateElement(
+                    {
+                        pageLanguage: "en",
+                        layout: google.translate.TranslateElement.InlineLayout
+                            .SIMPLE,
+                    },
+                    "google_translate_element"
+                );
+            }
+        </script>
+        <style>
+            .goog-te-gadget {
+                font-size: 1rem;
+                color: inherit;
+                font-family: inherit;
+                margin-left: 2rem;
+            }
+            .goog-te-gadget-simple {
+                border: none !important;
+                font-size: 1rem;
+                color: inherit;
+                font-family: inherit;
+            }
+            .goog-te-gadget-simple::before {
+                content: "Translate";
+                font-weight: 600;
+                color: inherit;
+                font-family: inherit;
+            }
+            .goog-te-gadget-simple * {
+                display: none;
+            }
+        </style>
+
         @inertiaHead
     </head>
-    <body class="font-sans antialiased">
+    <body class="font-sans text-blue-300 antialiased">
         @inertia @env('local')
 
 

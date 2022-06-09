@@ -1,5 +1,5 @@
 <script setup>
-import AppLayout from "@/Layouts/AppLayout.vue";
+import DashboardLayout from "@/Layouts/DashboardLayout.vue";
 import Welcome from "@/Jetstream/Welcome.vue";
 import { Link, useForm } from "@inertiajs/inertia-vue3";
 
@@ -28,10 +28,10 @@ const form = useForm({
 const updateOrganisation = () => {
     form.post(
         props.organisation
-            ? route("organisation.update", {
+            ? route("dashboard.organisation.update", {
                   organisation: props.organisation.id,
               })
-            : route("organisation.store"),
+            : route("dashboard.organisation.store"),
         {
             errorBag: "updateOrganisation",
         }
@@ -40,7 +40,7 @@ const updateOrganisation = () => {
 </script>
 
 <template>
-    <AppLayout
+    <DashboardLayout
         :title="
             organisation ? 'Edit organisation' : 'Create a new organisation'
         "
@@ -152,5 +152,5 @@ const updateOrganisation = () => {
                 </JetFormSection>
             </div>
         </div>
-    </AppLayout>
+    </DashboardLayout>
 </template>

@@ -1,6 +1,6 @@
 <script setup>
-import ApiTokenManager from '@/Pages/API/Partials/ApiTokenManager.vue';
-import AppLayout from '@/Layouts/AppLayout.vue';
+import ApiTokenManager from "@/Pages/API/Partials/ApiTokenManager.vue";
+import DashboardLayout from "@/Layouts/DashboardLayout.vue";
 
 defineProps({
     tokens: Array,
@@ -10,15 +10,15 @@ defineProps({
 </script>
 
 <template>
-    <AppLayout title="API Tokens">
+    <DashboardLayout title="API Tokens">
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            <h2 class="text-xl font-semibold leading-tight text-gray-800">
                 API Tokens
             </h2>
         </template>
 
         <div>
-            <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-7xl py-10 sm:px-6 lg:px-8">
                 <ApiTokenManager
                     :tokens="tokens"
                     :available-permissions="availablePermissions"
@@ -26,5 +26,5 @@ defineProps({
                 />
             </div>
         </div>
-    </AppLayout>
+    </DashboardLayout>
 </template>

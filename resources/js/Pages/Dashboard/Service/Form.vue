@@ -1,5 +1,5 @@
 <script setup>
-import AppLayout from "@/Layouts/AppLayout.vue";
+import DashboardLayout from "@/Layouts/DashboardLayout.vue";
 import Welcome from "@/Jetstream/Welcome.vue";
 import { Link, useForm } from "@inertiajs/inertia-vue3";
 import { ref, watch } from "vue";
@@ -71,8 +71,8 @@ const form = useForm({
 const updateService = () => {
     form.post(
         props.service
-            ? route("service.update", { service: props.service.id })
-            : route("service.store"),
+            ? route("dashboard.service.update", { service: props.service.id })
+            : route("dashboard.service.store"),
         {
             errorBag: "updateService",
         }
@@ -105,7 +105,7 @@ watch(
 </script>
 
 <template>
-    <AppLayout :title="service ? 'Edit service' : 'Create a new service'">
+    <DashboardLayout :title="service ? 'Edit service' : 'Create a new service'">
         <template #header>
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
                 {{ service ? "Edit service" : "Create service" }}
@@ -248,111 +248,6 @@ watch(
                 <JetSectionBorder />
 
                 <JetFormSection>
-                    <template #title>Accessing this service</template>
-
-                    <!--                    
-                        <template #description>
-                        A summary of the organisation’s details will be shown
-                        alongside every service, and each organisation will
-                        have its own page listing all the services it
-                        delivers.
-                    </template> -->
-
-                    <template #form>
-                        <!-- Delivery type -->
-                        <div class="col-span-6 sm:col-span-4">
-                            <JetLabel
-                                for="attending_type"
-                                value="Delivery type"
-                            />
-                            <JetSelect
-                                id="attending_type"
-                                v-model="form.attending_type"
-                                :options="{
-                                    phone: 'Phone',
-                                    online: 'Online',
-                                    venue: 'At a venue/building',
-                                    'home visit': 'Home visit',
-                                }"
-                                class="mt-1 block w-full"
-                            />
-                            <JetInputError
-                                :message="form.errors.attending_type"
-                                class="mt-2"
-                            />
-                        </div>
-
-                        <!-- Attendance Access -->
-                        <div class="col-span-6 sm:col-span-4">
-                            <JetLabel
-                                for="attending_access"
-                                value="Attendance access"
-                            />
-                            <JetSelect
-                                id="attending_access"
-                                v-model="form.attending_access"
-                                :options="{
-                                    'drop-in': 'Drop-in',
-                                    referral: 'Referral',
-                                    appointment: 'Appointment',
-                                    membership: 'Membership',
-                                }"
-                                class="mt-1 block w-full"
-                            />
-                            <JetInputError
-                                :message="form.errors.attending_access"
-                                class="mt-2"
-                            />
-                        </div>
-
-                        <!-- Wait time -->
-                        <div
-                            v-if="
-                                ['referral', 'appointment'].includes(
-                                    form.attending_access
-                                )
-                            "
-                            class="col-span-6 sm:col-span-4"
-                        >
-                            <JetLabel for="wait_time" value="Wait time" />
-                            <JetInput
-                                id="wait_time"
-                                type="text"
-                                v-model="form.wait_time"
-                                class="mt-1 block w-full"
-                            />
-                            <JetInputError
-                                :message="form.errors.wait_time"
-                                class="mt-2"
-                            />
-                        </div>
-
-                        <!-- Referral process -->
-                        <div
-                            v-if="form.attending_access == 'referral'"
-                            class="col-span-6 sm:col-span-4"
-                        >
-                            <JetLabel
-                                for="referral_process"
-                                value="Referral process"
-                            />
-                            <JetTextarea
-                                id="referral_process"
-                                type="text"
-                                v-model="form.referral_process"
-                                class="mt-1 block w-full"
-                            />
-                            <JetInputError
-                                :message="form.errors.referral_process"
-                                class="mt-2"
-                            />
-                        </div>
-                    </template>
-                </JetFormSection>
-
-                <JetSectionBorder />
-
-                <JetFormSection>
                     <template #title>Contact details</template>
 
                     <!--                    
@@ -389,7 +284,7 @@ watch(
                                 class="mt-1 block w-full"
                             />
                             <JetInputError
-                                :message="form.errors.website"
+                                :message="form.errors.url"
                                 class="mt-2"
                             />
                         </div>
@@ -622,5 +517,5 @@ watch(
                 <JetSectionBorder />
             </div>
         </div>
-    </AppLayout>
+    </DashboardLayout>
 </template>

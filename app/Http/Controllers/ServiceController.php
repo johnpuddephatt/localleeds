@@ -2,107 +2,89 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ServiceRequest;
-use App\Models\Service;
-use App\Models\Organisation;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Carbon\Carbon;
+use App\Models\Service;
+use Illuminate\Database\Eloquent\Builder;
 
 class ServiceController extends Controller
 {
-    /**
-     * @param \Illuminate\Http\Request $request
-     * @return \Inertia\Inertia
-     */
-    public function index(Request $request)
+    public function show(Request $request, Service $service)
     {
-        $services = Service::all();
-        $organisations = Organisation::select("id", "name")->get();
+        $service->load([
+            "organisation",
+            "contacts",
+            "locations",
+            "costOptions",
+            "reviews",
+            "fundings",
+            "eligibilities",
+        ]);
 
-        return Inertia::render(
-            "Service/Index",
-            compact("services", "organisations")
-        );
-    }
-
-    /**
-     * @param \Illuminate\Http\Request $request
-     * @return \Inertia\Inertia
-     */
-    public function create(Request $request, Organisation $organisation)
-    {
-        return Inertia::render("Service/Form", [
-            "organisation_id" => $organisation->id,
-            "languages" => config("taxonomies.languages"),
-            "accessibility_for_disabilities" => config(
-                "taxonomies.accessibility"
-            ),
+        return Inertia::render("Service/Show", [
+            "service" => $service,
         ]);
     }
 
-    /**
-     * @param \Illuminate\Http\Request $request
-     * @return \Inertia\Inertia
-     */
-    public function edit(Request $request, Service $service)
+    public function index(Request $request, $view = "list")
     {
-        $accessibility_for_disabilities = config("taxonomies.accessibility");
-        $languages = config("taxonomies.languages");
-        $service->languages = $service
-            ->languages()
-            ->pluck("language")
-            ->toArray();
-        $service->load(
-            "fundings",
-            "reviews",
-            "serviceAreas",
-            "contacts.phone",
-            "eligibilities",
-            "costOptions",
-            "locations.physicalAddress"
-        );
-        return Inertia::render("Service/Form", compact("service", "languages"));
-    }
+        $services = \App\Models\Service::query();
+        $services = $services
+            ->with("organisation:id,name")
+            ->withCount("costOptions");
 
-    /**
-     * @param \App\Http\Requests\ServiceRequest $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(ServiceRequest $request)
-    {
-        $service = Service::create($request->validated());
+        if ($request->input("postcode")) {
+            $services = $services->postcodeFilter(
+                $request->input("postcode"),
+                $request->input("distance") ?? 3 // distance
+            );
+        }
 
-        $service->updateLanguages($request->languages);
-        $service->updateFundings($request->fundings);
-        $service->updateReviews($request->reviews);
-        $service->updateServiceAreas($request->service_areas);
-        $service->updateContacts($request->contacts);
-        $service->updateCostOptions($request->cost_options);
-        $service->updateEligibilities($request->eligibilities);
-        $service->updateLocations($request->locations);
+        if ($request->input("free") === "true") {
+            $services = $services->freefilter();
+        }
 
-        return redirect()->route("service.index");
-    }
+        if ($view == "list") {
+            $services = $services
+                ->paginate(8)
+                ->withQueryString()
+                ->fragment("results")
+                ->through(function ($item) {
+                    return [
+                        "id" => $item->id,
+                        "name" => $item->name,
+                        "organisation" => $item->organisation->name,
+                        "cost_options_count" => $item->cost_options_count,
+                        "distance" => number_format($item->distance, 0),
+                    ];
+                });
+        }
 
-    /**
-     * @param \App\Http\Requests\ServiceRequest $request
-     * @param \App\Models\Service $service
-     * @return \Illuminate\Http\Response
-     */
-    public function update(ServiceRequest $request, Service $service)
-    {
-        $service->update($request->validated());
+        if ($view == "map" && !$request->input("postcode")) {
+            $services = $services->joinLocations();
+        }
 
-        $service->updateLanguages($request->languages);
-        $service->updateFundings($request->fundings);
-        $service->updateReviews($request->reviews);
-        $service->updateServiceAreas($request->service_areas);
-        $service->updateContacts($request->contacts);
-        $service->updateCostOptions($request->cost_options);
-        $service->updateEligibilities($request->eligibilities);
-        $service->updateLocations($request->locations);
+        if ($view == "map") {
+            $services = $services->with("locations");
 
-        return redirect()->route("service.index");
+            $services = $services->addSelect(["latitude", "longitude"]);
+            $services = $services->get()->map(function ($item) {
+                return [
+                    "id" => $item->id,
+                    "name" => $item->name,
+                    "organisation" => $item->organisation->name,
+                    "cost_options_count" => $item->cost_options_count,
+                    "latitude" => $item->latitude,
+                    "longitude" => $item->longitude,
+                    "distance" => number_format($item->distance, 0),
+                ];
+            });
+        }
+
+        return Inertia::render("Service/Index", [
+            "services" => $services,
+            "view" => $view,
+            "filters" => $request->input(),
+        ]);
     }
 }

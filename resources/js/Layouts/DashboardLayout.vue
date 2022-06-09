@@ -65,17 +65,25 @@ const logout = () => {
                                 </JetNavLink>
 
                                 <JetNavLink
-                                    :href="route('organisation.index')"
+                                    :href="
+                                        route('dashboard.organisation.index')
+                                    "
                                     :active="
-                                        route().current('organisation.index')
+                                        route().current(
+                                            'dashboard.organisation.index'
+                                        )
                                     "
                                 >
                                     Organisations
                                 </JetNavLink>
 
                                 <JetNavLink
-                                    :href="route('service.index')"
-                                    :active="route().current('service.index')"
+                                    :href="route('dashboard.service.index')"
+                                    :active="
+                                        route().current(
+                                            'dashboard.service.index'
+                                        )
+                                    "
                                 >
                                     Services
                                 </JetNavLink>

@@ -20,6 +20,8 @@ class Contact extends Model
      */
     protected $fillable = ["service_id", "organisation_id", "name", "title"];
 
+    protected $with = ["phone"];
+
     public function phone()
     {
         return $this->hasOne(Phone::class);

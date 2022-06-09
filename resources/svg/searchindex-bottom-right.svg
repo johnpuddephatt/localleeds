@@ -1,0 +1,15 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="121.23" height="139.06" viewBox="0 0 121.23 139.06">
+  <defs>
+    <style>
+      .clsf-1 {
+        fill: #d78752;
+      }
+
+      .clsf-2 {
+        fill: #f5cbf7;
+      }
+    </style>
+  </defs>
+  <circle class="clsf-1" cx="30.48" cy="30.48" r="30.48"/>
+  <circle class="clsf-2" cx="100.49" cy="118.31" r="20.74"/>
+</svg>

@@ -1,5 +1,5 @@
 <script setup>
-import AppLayout from "@/Layouts/AppLayout.vue";
+import DashboardLayout from "@/Layouts/DashboardLayout.vue";
 import Welcome from "@/Jetstream/Welcome.vue";
 import InertiaButton from "@/Jetstream/InertiaButton.vue";
 import { Link } from "@inertiajs/inertia-vue3";
@@ -10,14 +10,14 @@ defineProps({
 </script>
 
 <template>
-    <AppLayout title="Organisations">
+    <DashboardLayout title="Organisations">
         <template #header>
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
                 Organisations
             </h2>
 
             <inertia-button
-                :href="route('organisation.create')"
+                :href="route('dashboard.organisation.create')"
                 class="-my-2 ml-auto"
                 >Add a new organisation</inertia-button
             >
@@ -116,7 +116,7 @@ defineProps({
                             >
                                 <Link
                                     :href="
-                                        route('organisation.edit', {
+                                        route('dashboard.organisation.edit', {
                                             id: organisation.id,
                                         })
                                     "
@@ -129,5 +129,5 @@ defineProps({
                 </table>
             </div>
         </div>
-    </AppLayout>
+    </DashboardLayout>
 </template>

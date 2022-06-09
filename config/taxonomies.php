@@ -1,6 +1,17 @@
 <?php
 
 return [
+    "accessibilities" => [
+        "accessible-toilets" => "Accessible toilets",
+        "bus-nearby" => "Bus nearby",
+        "dementia-friendly" => "Dementia friendly",
+        "disability-parking" => "Disability parking",
+        "guide-dog-friendly" => "Guide dog friendly",
+        "step-free-access" => "Step-free access",
+        "visitor-parking" => "Visitor parking",
+        "visually-impaired-friendly" => "Visually impaired friendly",
+        "wheelchair-access" => "Wheelchair access",
+    ],
     "languages" => [
         ["code" => "ab", "label" => "Abkhazian"],
         ["code" => "aa", "label" => "Afar"],

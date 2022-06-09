@@ -15,14 +15,27 @@ use Inertia\Inertia;
 |
 */
 
-Route::get("/", function () {
-    return Inertia::render("Welcome", [
-        "canLogin" => Route::has("login"),
-        "canRegister" => Route::has("register"),
-        "laravelVersion" => Application::VERSION,
-        "phpVersion" => PHP_VERSION,
-    ]);
-});
+Route::get("/", App\Http\Controllers\HomeController::class)->name("home");
+
+Route::get("organisations", [
+    App\Http\Controllers\OrganisationController::class,
+    "index",
+])->name("organisation.index");
+
+Route::get("organisation/{organisation}", [
+    App\Http\Controllers\OrganisationController::class,
+    "show",
+])->name("organisation.show");
+
+Route::get("service/{service}", [
+    App\Http\Controllers\ServiceController::class,
+    "show",
+])->name("service.show");
+
+Route::get("services/{view?}", [
+    App\Http\Controllers\ServiceController::class,
+    "index",
+])->name("service.index");
 
 Route::middleware([
     "auth:web,sanctum",
@@ -34,52 +47,52 @@ Route::middleware([
     })->name("dashboard");
 
     Route::get("/dashboard/organisations", [
-        App\Http\Controllers\OrganisationController::class,
+        App\Http\Controllers\Dashboard\OrganisationController::class,
         "index",
-    ])->name("organisation.index");
+    ])->name("dashboard.organisation.index");
 
     Route::get("/dashboard/organisations/create", [
-        App\Http\Controllers\OrganisationController::class,
+        App\Http\Controllers\Dashboard\OrganisationController::class,
         "create",
-    ])->name("organisation.create");
+    ])->name("dashboard.organisation.create");
 
     Route::get("/dashboard/organisations/{organisation}", [
-        App\Http\Controllers\OrganisationController::class,
+        App\Http\Controllers\Dashboard\OrganisationController::class,
         "edit",
-    ])->name("organisation.edit");
+    ])->name("dashboard.organisation.edit");
 
     Route::post("/dashboard/organisations/create", [
-        App\Http\Controllers\OrganisationController::class,
+        App\Http\Controllers\Dashboard\OrganisationController::class,
         "store",
-    ])->name("organisation.store");
+    ])->name("dashboard.organisation.store");
 
     Route::post("/dashboard/organisations/{organisation}", [
-        App\Http\Controllers\OrganisationController::class,
+        App\Http\Controllers\Dashboard\OrganisationController::class,
         "update",
-    ])->name("organisation.update");
+    ])->name("dashboard.organisation.update");
 
     Route::get("/dashboard/services", [
-        App\Http\Controllers\ServiceController::class,
+        App\Http\Controllers\Dashboard\ServiceController::class,
         "index",
-    ])->name("service.index");
+    ])->name("dashboard.service.index");
 
     Route::get("/dashboard/services/create/{organisation}", [
-        App\Http\Controllers\ServiceController::class,
+        App\Http\Controllers\Dashboard\ServiceController::class,
         "create",
-    ])->name("service.create");
+    ])->name("dashboard.service.create");
 
     Route::get("/dashboard/services/{service}", [
-        App\Http\Controllers\ServiceController::class,
+        App\Http\Controllers\Dashboard\ServiceController::class,
         "edit",
-    ])->name("service.edit");
+    ])->name("dashboard.service.edit");
 
     Route::post("/dashboard/services/create", [
-        App\Http\Controllers\ServiceController::class,
+        App\Http\Controllers\Dashboard\ServiceController::class,
         "store",
-    ])->name("service.store");
+    ])->name("dashboard.service.store");
 
     Route::post("/dashboard/services/{service}", [
-        App\Http\Controllers\ServiceController::class,
+        App\Http\Controllers\Dashboard\ServiceController::class,
         "update",
-    ])->name("service.update");
+    ])->name("dashboard.service.update");
 });
