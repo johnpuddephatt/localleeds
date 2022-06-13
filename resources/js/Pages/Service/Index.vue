@@ -125,14 +125,14 @@ const totalServices = computed(() => {
                         </option>
                     </select>
 
-                    <select
+                    <!--<select
                         class="border-none px-6 py-4 md:w-1/4"
                         v-model="form.service_user"
                     >
                         <option value="" selected>All people</option>
                         <option value="young_people">Young people</option>
                         <option value="older_people">Older people</option>
-                    </select>
+                    </select>-->
 
                     <label class="py-4"
                         ><input

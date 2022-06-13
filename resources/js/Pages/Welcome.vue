@@ -84,14 +84,14 @@ const submitForm = () => {
                             </option>
                         </select>
 
-                        <select
+                        <!-- <select
                             class="hidden w-1/3 border-none px-6 py-4 md:inline-block"
                             v-model="form.service_user"
                         >
                             <option value="" selected>All people</option>
                             <option value="young_people">Young people</option>
                             <option value="older_people">Older people</option>
-                        </select>
+                        </select> -->
                     </div>
                     <input
                         class="rounded-2xl bg-blue-300 px-10 py-3 font-bold text-white"
