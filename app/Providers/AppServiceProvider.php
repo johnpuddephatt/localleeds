@@ -30,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
             "cost_option" => "App\Models\CostOption",
             "service_area" => "App\Models\ServiceArea",
             "service" => "App\Models\Service",
+            "taxonomy" => "App\Models\Taxonomy",
         ]);
     }
 }
