@@ -13,6 +13,11 @@ defineProps({
 
 <template>
     <Banner />
+    <div class="bg-green-300 py-2 text-center text-sm font-semibold text-white">
+        <div class="container">
+            This site is currently for demonstration purposes only.
+        </div>
+    </div>
     <Header />
     <!-- Page Content -->
     <main>
