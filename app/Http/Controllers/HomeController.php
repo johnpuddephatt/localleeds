@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
@@ -43,8 +44,8 @@ class HomeController extends Controller
                     return [
                         "id" => $item->id,
                         "name" => $item->name,
-                        "image" => nova_get_setting(
-                            "featured_category_{$key}_image"
+                        "image" => Storage::url(
+                            nova_get_setting("featured_category_{$key}_image")
                         ),
                     ];
                 }),
