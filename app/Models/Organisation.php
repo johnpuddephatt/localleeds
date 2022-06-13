@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use App\Traits\UuidTrait;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Image;
@@ -61,5 +62,10 @@ class Organisation extends Model
     public function users()
     {
         return $this->belongsToMany(User::class);
+    }
+
+    public function types()
+    {
+        return $this->morphToMany(Taxonomy::class, "link", "link_taxonomy");
     }
 }

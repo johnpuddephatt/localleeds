@@ -34,4 +34,9 @@ class Eligibility extends Model
     {
         return $this->belongsTo(Service::class);
     }
+
+    public function tags()
+    {
+        return $this->morphToMany(Taxonomy::class, "link", "link_taxonomy");
+    }
 }

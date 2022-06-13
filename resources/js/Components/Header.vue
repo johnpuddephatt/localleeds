@@ -1,6 +1,7 @@
 <script setup>
 import { Head, Link } from "@inertiajs/inertia-vue3";
 import OrganisationSearch from "@/Components/OrganisationSearch.vue";
+import ApplicationMark from "@/Jetstream/ApplicationMark";
 </script>
 
 <template>
@@ -10,7 +11,9 @@ import OrganisationSearch from "@/Components/OrganisationSearch.vue";
         <Link
             class="text-3xl font-bold tracking-tighter text-blue-300"
             :href="route('home')"
-            ><span class="text-green-300">Local</span>Leeds</Link
+        >
+            <ApplicationMark class="mr-1 inline-block h-12 w-12" />
+            <span class="text-green-300">Local</span>Leeds</Link
         >
         <organisation-search />
 

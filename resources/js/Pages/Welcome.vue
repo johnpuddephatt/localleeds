@@ -67,8 +67,21 @@ const submitForm = () => {
                             v-model="form.service_category"
                         >
                             <option value="" selected>All categories</option>
-                            <option value="mental_health">Mental health</option>
-                            <option value="mental_health">Food banks</option>
+                            <option disabled value=""></option>
+                            <option
+                                v-for="category in homeFeaturedCategories"
+                                :value="category.id"
+                            >
+                                {{ category.name }}
+                            </option>
+                            <option disabled value=""></option>
+
+                            <option
+                                v-for="category in homeCategories"
+                                :value="category.id"
+                            >
+                                {{ category.name }}
+                            </option>
                         </select>
 
                         <select

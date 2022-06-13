@@ -1,7 +1,7 @@
 <script setup>
 import { Head, Link } from "@inertiajs/inertia-vue3";
 
-defineProps({ filters: Object });
+defineProps({ filters: Object, serviceCategories: Object });
 </script>
 
 <template>
@@ -13,7 +13,12 @@ defineProps({ filters: Object });
             filters.service_category
         "
     >
-        Browse by category
+        {{
+            serviceCategories.find(
+                (category) => category.id == filters.service_category
+            )?.name
+        }}
+        services
     </h1>
 
     <h1

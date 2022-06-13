@@ -7,6 +7,31 @@
             >
                 <div>
                     <div class="font-semibold leading-none">
+                        <span v-for="(tag_id, key) in eligibility.tags">
+                            {{
+                                eligibilities.find((item) => item.id == tag_id)
+                                    .name
+                            }}
+
+                            <span
+                                class="text-gray-400"
+                                v-if="key + 1 < eligibility.tags.length"
+                            >
+                                and
+                            </span>
+                        </span>
+
+                        <span
+                            class="text-gray-400"
+                            v-if="
+                                eligibility.tags &&
+                                eligibility.tags &&
+                                (eligibility.minimum_age ||
+                                    eligibility.maximum_age)
+                            "
+                            >and</span
+                        >
+
                         {{ eligibility.minimum_age ?? "No minimum age" }} to
                         {{ eligibility.maximum_age ?? " No maximum age" }}
                     </div>
@@ -76,6 +101,27 @@
                         class="mt-1 block w-full"
                     />
                 </div>
+
+                <div class="col-span-2 w-full pb-12">
+                    <JetLabel for="eligibility_tags" value="Eligible groups" />
+                    <JetListbox
+                        v-model="
+                            eligibilityOptions[currentlyEditingEligibility].tags
+                        "
+                        :data="eligibilities"
+                        id="eligibility_tags"
+                    />
+                    <p class="mt-4 text-sm text-gray-600">
+                        The options selected here will be combined into one
+                        eligibility requirement (e.g. Female AND Homeless AND
+                        aged 18-25).
+                    </p>
+                    <p class="mt-2 text-sm text-gray-600">
+                        If you want anyone who was Female OR Homeless OR aged
+                        18-25, add these as three separate eligibility
+                        requirements.
+                    </p>
+                </div>
             </form>
         </template>
 
@@ -102,12 +148,13 @@ import JetDialogModal from "@/Jetstream/DialogModal.vue";
 import JetButton from "@/Jetstream/Button.vue";
 import JetSelect from "@/Jetstream/Select.vue";
 import JetSecondaryButton from "@/Jetstream/SecondaryButton.vue";
+import JetListbox from "@/Jetstream/Listbox.vue";
 
 const form = ref(null);
 
 const props = defineProps({
     modelValue: Array,
-    options: Object,
+    eligibilities: Object,
 });
 
 const emit = defineEmits(["update:modelValue"]);

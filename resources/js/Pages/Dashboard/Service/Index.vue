@@ -4,7 +4,6 @@ import { ref } from "vue";
 import DashboardLayout from "@/Layouts/DashboardLayout.vue";
 import Welcome from "@/Jetstream/Welcome.vue";
 import InertiaButton from "@/Jetstream/InertiaButton.vue";
-import Button from "@/Jetstream/Button.vue";
 import JetDialogModal from "@/Jetstream/DialogModal.vue";
 import JetButton from "@/Jetstream/Button.vue";
 import JetSecondaryButton from "@/Jetstream/SecondaryButton.vue";
@@ -33,9 +32,9 @@ const closeModal = () => {
                 Services
             </h2>
 
-            <Button @click.prevent="selectOrganisation" class="-my-2 ml-auto"
+            <JetButton @click.prevent="selectOrganisation" class="-my-2 ml-auto"
                 >Add a new service
-            </Button>
+            </JetButton>
         </template>
 
         <div class="py-12">
@@ -166,15 +165,18 @@ const closeModal = () => {
                     v-else
                     class="rounded border bg-gray-50 py-36 text-center text-sm text-gray-500"
                 >
-                    <p>No organisations have been added yet.</p>
+                    <p class="mt-8">No organisations have been added yet.</p>
 
-                    <Link
-                        class="mt-3 inline-flex items-center rounded-md border border-transparent bg-gray-800 px-6 py-2 text-base font-semibold tracking-wide text-white transition hover:bg-gray-700 focus:border-gray-900 focus:outline-none focus:ring focus:ring-gray-300 active:bg-gray-900 disabled:opacity-25"
+                    <inertia-button
+                        class="mt-6"
                         :href="route('dashboard.organisation.create')"
-                        >Create a new organisation</Link
+                        >Create a new organisation</inertia-button
                     >
                 </div>
-                <p class="mt-6 text-sm text-gray-500">
+                <p
+                    class="mt-6 text-sm text-gray-500"
+                    v-if="organisations.length"
+                >
                     Choose an existing organisation above or
                     <Link
                         class="text-gray-700 underline"

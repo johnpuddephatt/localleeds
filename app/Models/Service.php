@@ -55,11 +55,6 @@ class Service extends Model
         "assured_date" => "date:nS F Y",
     ];
 
-    public function taxonomies()
-    {
-        return $this->belongsToMany(Taxonomy::class);
-    }
-
     public function locations()
     {
         return $this->belongsToMany(Location::class);
@@ -120,6 +115,11 @@ class Service extends Model
         return $this->hasManyThrough(Phone::class, Contact::class);
     }
 
+    public function categories()
+    {
+        return $this->morphToMany(Taxonomy::class, "link", "link_taxonomy");
+    }
+
     public function updateLanguages($languages)
     {
         if (
@@ -173,7 +173,13 @@ class Service extends Model
     public function updateEligibilities($eligibilities)
     {
         $this->eligibilities()->delete();
-        $this->eligibilities()->createMany($eligibilities);
+
+        foreach ($eligibilities as $eligibility) {
+            $new_eligibility = $this->eligibilities()->create($eligibility);
+            if (isset($eligibility["tags"])) {
+                $new_eligibility->tags()->sync($eligibility["tags"]);
+            }
+        }
     }
 
     public function updateLocations($locations)

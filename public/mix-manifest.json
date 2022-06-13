@@ -1,8 +1,8 @@
 {
-    "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css",
-    "/images/hero-lower-left.jpg": "/images/hero-lower-left.jpg",
-    "/images/hero-upper-right.jpg": "/images/hero-upper-right.jpg",
-    "/images/searchindex_hero-upper-right-1.jpg": "/images/searchindex_hero-upper-right-1.jpg",
-    "/images/searchindex_hero-upper-right-2.jpg": "/images/searchindex_hero-upper-right-2.jpg"
+    "/js/app.js": "/js/app.js?id=075fef2aa2a9d6ddfff639e1cf83fc30",
+    "/css/app.css": "/css/app.css?id=01032ac144538409f8e6a6c5dcaa512b",
+    "/images/hero-lower-left.jpg": "/images/hero-lower-left.jpg?id=f4b605ccf975fd550d71fdf2fc5814b9",
+    "/images/hero-upper-right.jpg": "/images/hero-upper-right.jpg?id=7e19aaaf5989e347933b9a19ed9b4fad",
+    "/images/searchindex_hero-upper-right-1.jpg": "/images/searchindex_hero-upper-right-1.jpg?id=f4d0f61d5fdca6d6c93520d3c9aa47ea",
+    "/images/searchindex_hero-upper-right-2.jpg": "/images/searchindex_hero-upper-right-2.jpg?id=b6b06cf9c75d07a63c2d9050e9d07835"
 }

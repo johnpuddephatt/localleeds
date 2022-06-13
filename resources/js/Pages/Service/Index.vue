@@ -10,11 +10,12 @@ let props = defineProps({
     view: String,
     services: Object,
     filters: Object,
+    service_categories: Array,
 });
 
 const form = useForm({
     postcode: props.filters.postcode?.toUpperCase() ?? null,
-    service_category: "",
+    service_category: props.filters.service_category ?? "",
     service_user: "",
     distance: 3,
     free: props.filters.free ?? false,
@@ -46,7 +47,7 @@ const totalServices = computed(() => {
         <title>Search for a community-based service</title>
     </Head>
 
-    <FrontendLayout title="Welcome">
+    <FrontendLayout>
         <svg-vue
             class="pointer-events-none absolute right-0 top-[6.5rem] w-48 md:w-72"
             icon="searchindex_hero-upper-right"
@@ -68,7 +69,10 @@ const totalServices = computed(() => {
         <div
             class="container relative my-16 min-h-screen space-y-8 pt-56 xl:max-w-4xl"
         >
-            <IndexTitle :filters="filters" />
+            <IndexTitle
+                :filters="filters"
+                :serviceCategories="service_categories"
+            />
 
             <form @submit.prevent="submitForm" class="relative space-y-8">
                 <div class="rounded-2xl bg-blue-200 p-12">
@@ -110,10 +114,15 @@ const totalServices = computed(() => {
                     <select
                         class="border-none px-6 py-4 md:w-1/4"
                         v-model="form.service_category"
+                        @change="submitForm"
                     >
-                        <option value="" selected>All categories</option>
-                        <option value="mental_health">Mental health</option>
-                        <option value="food_banks">Food banks</option>
+                        <option value="">All categories</option>
+                        <option
+                            v-for="service_category in service_categories"
+                            :value="service_category.id"
+                        >
+                            {{ service_category.name }}
+                        </option>
                     </select>
 
                     <select
@@ -128,7 +137,7 @@ const totalServices = computed(() => {
                     <label class="py-4"
                         ><input
                             @change.prevent="submitForm"
-                            class="mr-2"
+                            class="mr-1"
                             type="checkbox"
                             v-model="form.free"
                         />
@@ -252,7 +261,7 @@ const totalServices = computed(() => {
                             Free
                         </div>
                         <div
-                            v-if="service.distance"
+                            v-if="service.distance && filters.postcode"
                             class="font-semibold text-green-300"
                         >
                             <svg

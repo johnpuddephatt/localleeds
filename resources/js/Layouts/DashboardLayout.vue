@@ -38,7 +38,7 @@ const logout = () => {
 
         <JetBanner />
 
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen bg-blue-100 text-blue-300">
             <nav class="border-b border-gray-100 bg-white">
                 <!-- Primary Navigation Menu -->
                 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

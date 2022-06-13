@@ -35,6 +35,8 @@ const props = defineProps({
     service: Object,
     languages: Array,
     organisation_id: String,
+    service_categories: Object,
+    eligibilities: Object,
 });
 
 const form = useForm({
@@ -66,6 +68,8 @@ const form = useForm({
     fundings: props.service?.fundings ?? [],
     reviews: props.service?.reviews ?? [],
     locations: props.service?.locations ?? [],
+
+    service_categories: props.service?.categories ?? [],
 });
 
 const updateService = () => {
@@ -107,7 +111,7 @@ watch(
 <template>
     <DashboardLayout :title="service ? 'Edit service' : 'Create a new service'">
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">
+            <h2 class="text-xl font-semibold leading-tight">
                 {{ service ? "Edit service" : "Create service" }}
             </h2>
 
@@ -120,7 +124,7 @@ watch(
 
             <JetButton
                 :class="{ 'opacity-25': form.processing }"
-                class="ml-auto"
+                class="-my-2 ml-auto"
                 :disabled="form.processing"
                 @click="updateService"
             >
@@ -221,6 +225,24 @@ watch(
                             />
                             <JetInputError
                                 :message="form.errors.deliverable_type"
+                                class="mt-2"
+                            />
+                        </div>
+
+                        <!-- Service category -->
+                        <div class="col-span-6 sm:col-span-4">
+                            <JetLabel
+                                for="service_category"
+                                value="Service categories"
+                            />
+                            <JetListbox
+                                id="service_category"
+                                v-model="form.service_categories"
+                                class="mt-1 block"
+                                :data="props.service_categories"
+                            />
+                            <JetInputError
+                                :message="form.errors.service_categories"
                                 class="mt-2"
                             />
                         </div>
@@ -466,12 +488,7 @@ watch(
                             <JetLabel value="Eligibility requirements" />
                             <JetEligibilities
                                 v-model="form.eligibilities"
-                                :options="{
-                                    null: 'Anyone',
-                                    12: 'Leaving care',
-                                    15: 'Homeless',
-                                    18: 'In danger',
-                                }"
+                                :eligibilities="eligibilities"
                             />
                         </div>
                     </template>

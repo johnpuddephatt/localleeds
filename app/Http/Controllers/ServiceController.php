@@ -33,6 +33,14 @@ class ServiceController extends Controller
             ->with("organisation:id,name")
             ->withCount("costOptions");
 
+        if ($request->input("service_category")) {
+            $services = $services->whereHas("categories", function (
+                Builder $query
+            ) use ($request) {
+                $query->where("id", $request->service_category);
+            });
+        }
+
         if ($request->input("postcode")) {
             $services = $services->postcodeFilter(
                 $request->input("postcode"),
@@ -85,6 +93,12 @@ class ServiceController extends Controller
             "services" => $services,
             "view" => $view,
             "filters" => $request->input(),
+            "service_categories" => \App\Models\Taxonomy::where(
+                "type",
+                "service_category"
+            )
+                ->select("id", "name")
+                ->get(),
         ]);
     }
 }

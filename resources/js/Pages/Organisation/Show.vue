@@ -26,6 +26,17 @@ let props = defineProps({
                 <h1 class="mb-4 text-5xl font-semibold md:text-6xl">
                     {{ organisation.name }}
                 </h1>
+                <div
+                    v-if="organisation.types.length"
+                    class="mt-6 flex flex-row flex-wrap gap-2"
+                >
+                    <div
+                        v-for="organisation_type in organisation.types"
+                        class="rounded-2xl bg-blue-100 p-3 px-6 font-medium"
+                    >
+                        {{ organisation_type.name }}
+                    </div>
+                </div>
                 <h2 class="mt-16 text-4xl font-semibold md:mt-24">
                     About this organisation
                 </h2>
@@ -81,7 +92,7 @@ let props = defineProps({
                                     Free
                                 </div>
                                 <div
-                                    v-if="service.distance"
+                                    v-if="service.distance && filters.postcode"
                                     class="font-semibold text-green-300"
                                 >
                                     <svg

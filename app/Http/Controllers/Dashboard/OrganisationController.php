@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrganisationRequest;
 use App\Models\Organisation;
+use App\Models\Taxonomy;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -30,9 +31,15 @@ class OrganisationController extends Controller
      */
     public function edit(Request $request, Organisation $organisation)
     {
+        $organisation_types = Taxonomy::where("type", "organisation_type")
+            ->select("id", "name")
+            ->get();
+
+        $organisation->types = $organisation->types()->pluck("id");
+
         return Inertia::render(
             "Dashboard/Organisation/Form",
-            compact("organisation")
+            compact("organisation", "organisation_types")
         );
     }
 
@@ -42,7 +49,14 @@ class OrganisationController extends Controller
      */
     public function create(Request $request)
     {
-        return Inertia::render("Dashboard/Organisation/Form");
+        $organisation_types = Taxonomy::where("type", "organisation_type")
+            ->select("id", "name")
+            ->get();
+
+        return Inertia::render(
+            "Dashboard/Organisation/Form",
+            compact("organisation_types")
+        );
     }
 
     /**
@@ -51,9 +65,11 @@ class OrganisationController extends Controller
      */
     public function store(OrganisationRequest $request)
     {
-        \Auth::user()
+        $organisation = \Auth::user()
             ->organisations()
             ->create($request->validated());
+
+        $organisation->types()->sync($request->types);
 
         session()->flash("flash.banner", "Organisation succesfully created.");
         session()->flash("flash.bannerStyle", "success");
@@ -70,6 +86,8 @@ class OrganisationController extends Controller
         Organisation $organisation
     ) {
         $organisation->update($request->validated());
+
+        $organisation->types()->sync($request->types);
 
         session()->flash("flash.banner", "Organisation updated.");
         session()->flash("flash.bannerStyle", "success");

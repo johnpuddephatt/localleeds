@@ -1,6 +1,7 @@
 <script setup>
 import { Head, Link } from "@inertiajs/inertia-vue3";
 import OrganisationSearch from "@/Components/OrganisationSearch.vue";
+import ApplicationMark from "@/Jetstream/ApplicationMark";
 </script>
 
 <template>
@@ -10,11 +11,19 @@ import OrganisationSearch from "@/Components/OrganisationSearch.vue";
             icon="footer"
         ></svg-vue>
         <div class="container flex flex-row items-center">
-            <Link
-                class="text-3xl font-bold tracking-tighter text-green-100"
-                :href="route('home')"
-                ><span class="text-white">Local</span>Leeds</Link
-            >
+            <Link class="flex flex-row" :href="route('home')">
+                <ApplicationMark class="mr-1 inline-block h-12 w-12" />
+                <div>
+                    <div
+                        class="text-3xl font-bold leading-none tracking-tighter text-green-100"
+                    >
+                        <span class="text-white">Local</span>Leeds
+                    </div>
+                    <div class="text-sm font-bold text-white">
+                        Find local, community‑based support in Leeds
+                    </div>
+                </div>
+            </Link>
             <organisation-search :openTop="true" />
 
             <div class="ml-8 space-x-2 sm:block">

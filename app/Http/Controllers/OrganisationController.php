@@ -26,7 +26,7 @@ class OrganisationController extends Controller
             });
 
         return Inertia::render("Organisation/Show", [
-            "organisation" => $organisation,
+            "organisation" => $organisation->load("types:name"),
             "services" => $services,
         ]);
     }

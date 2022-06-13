@@ -29,6 +29,7 @@ class HomeController extends Controller
                         "featured_category_2",
                     ])
                 )
+                ->select("id", "name")
                 ->get(),
             "homeFeaturedCategories" => \App\Models\Taxonomy::whereIn(
                 "id",

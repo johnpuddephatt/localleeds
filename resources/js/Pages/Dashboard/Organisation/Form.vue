@@ -11,9 +11,11 @@ import JetButton from "@/Jetstream/Button.vue";
 import JetActionMessage from "@/Jetstream/ActionMessage.vue";
 import JetInputError from "@/Jetstream/InputError.vue";
 import JetLabel from "@/Jetstream/Label.vue";
+import JetListbox from "@/Jetstream/Listbox.vue";
 
 const props = defineProps({
     organisation: Object,
+    organisation_types: Object,
 });
 
 const form = useForm({
@@ -23,6 +25,7 @@ const form = useForm({
     email: props.organisation?.email ?? null,
     url: props.organisation?.url ?? null,
     description: props.organisation?.description ?? null,
+    types: props.organisation?.types ?? [],
 });
 
 const updateOrganisation = () => {
@@ -51,7 +54,7 @@ const updateOrganisation = () => {
             </h2>
 
             <JetButton
-                class="ml-auto"
+                class="-my-2 ml-auto"
                 :class="{ 'opacity-25': form.processing }"
                 :disabled="form.processing"
                 @click="updateOrganisation"
@@ -144,6 +147,21 @@ const updateOrganisation = () => {
                             />
                             <JetInputError
                                 :message="form.errors.url"
+                                class="mt-2"
+                            />
+                        </div>
+
+                        <!-- Organisation type -->
+                        <div class="col-span-6 sm:col-span-4">
+                            <JetLabel for="types" value="Organisation type" />
+                            <JetListbox
+                                id="organisation_type"
+                                v-model="form.types"
+                                class="mt-1 block w-3/4"
+                                :data="props.organisation_types"
+                            />
+                            <JetInputError
+                                :message="form.errors.types"
                                 class="mt-2"
                             />
                         </div>
