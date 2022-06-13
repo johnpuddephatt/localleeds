@@ -1,6 +1,8 @@
 {
-    "/js/app.js": "/js/app.js?id=3add318d42d29fc0212cb35b11026ef0",
-    "/css/app.css": "/css/app.css?id=d1442d9c4f0ab4b5facee46752f93a01",
-    "/images/hero-lower-left.jpg": "/images/hero-lower-left.jpg?id=f4b605ccf975fd550d71fdf2fc5814b9",
-    "/images/hero-upper-right.jpg": "/images/hero-upper-right.jpg?id=7e19aaaf5989e347933b9a19ed9b4fad"
+    "/js/app.js": "/js/app.js",
+    "/css/app.css": "/css/app.css",
+    "/images/hero-lower-left.jpg": "/images/hero-lower-left.jpg",
+    "/images/hero-upper-right.jpg": "/images/hero-upper-right.jpg",
+    "/images/searchindex_hero-upper-right-1.jpg": "/images/searchindex_hero-upper-right-1.jpg",
+    "/images/searchindex_hero-upper-right-2.jpg": "/images/searchindex_hero-upper-right-2.jpg"
 }

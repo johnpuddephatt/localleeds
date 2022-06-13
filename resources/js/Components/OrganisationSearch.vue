@@ -59,7 +59,8 @@ const closeSearch = (event) => {
             @blur="closeSearch"
             @click.stop="fetchOrganisations"
             v-model="searchTerm"
-            class="w-72 rounded-2xl border-blue-200 px-6 pl-10 font-medium shadow-inner"
+            class="w-72 rounded-2xl px-6 pl-10 font-medium shadow-inner"
+            :class="{ 'border-blue-200': searchOpen }"
             type="text"
             placeholder="Search for an organisation..."
         />

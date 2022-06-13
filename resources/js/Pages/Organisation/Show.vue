@@ -11,6 +11,9 @@ let props = defineProps({
 </script>
 
 <template>
+    <Head>
+        <title>{{ organisation.name }}</title>
+    </Head>
     <FrontendLayout title="Welcome">
         <div
             class="container relative mt-36 flex min-h-screen flex-col md:flex-row xl:max-w-6xl"
@@ -36,7 +39,7 @@ let props = defineProps({
                         id="services"
                     >
                         <svg-vue
-                            class="pointer-events-none right-0 top-12 mr-4 ml-auto w-1/2 translate-x-1/3 transform md:absolute md:w-1/3 md:translate-x-1/2"
+                            class="pointer-events-none right-0 top-12 ml-auto w-1/2 transform md:absolute md:mr-4 md:w-1/3 md:translate-x-1/2"
                             icon="organisation-services"
                         ></svg-vue>
 
@@ -111,7 +114,7 @@ let props = defineProps({
 
             <div class="space-y-6 pb-48 md:w-2/5 md:pl-12">
                 <svg-vue
-                    class="pointer-events-none mr-4 ml-auto w-2/3"
+                    class="pointer-events-none relative z-10 mr-4 ml-auto -mb-[0.35rem] -mt-2 w-2/3 md:mt-0"
                     icon="organisation-top-right"
                 ></svg-vue>
                 <div

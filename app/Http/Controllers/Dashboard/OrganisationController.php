@@ -16,7 +16,7 @@ class OrganisationController extends Controller
      */
     public function index(Request $request)
     {
-        $organisations = Organisation::all();
+        $organisations = \Auth::user()->organisations;
 
         return Inertia::render(
             "Dashboard/Organisation/Index",
@@ -51,7 +51,9 @@ class OrganisationController extends Controller
      */
     public function store(OrganisationRequest $request)
     {
-        $organisation = Organisation::create($request->validated());
+        \Auth::user()
+            ->organisations()
+            ->create($request->validated());
 
         session()->flash("flash.banner", "Organisation succesfully created.");
         session()->flash("flash.bannerStyle", "success");

@@ -6,6 +6,7 @@ import Welcome from "@/Jetstream/Welcome.vue";
 import InertiaButton from "@/Jetstream/InertiaButton.vue";
 import Button from "@/Jetstream/Button.vue";
 import JetDialogModal from "@/Jetstream/DialogModal.vue";
+import JetButton from "@/Jetstream/Button.vue";
 import JetSecondaryButton from "@/Jetstream/SecondaryButton.vue";
 import { Link } from "@inertiajs/inertia-vue3";
 
@@ -49,7 +50,7 @@ const closeModal = () => {
                     v-else
                     class="min-w-full table-fixed divide-y divide-gray-200 overflow-hidden rounded border shadow dark:divide-gray-700"
                 >
-                    <thead class="bg-gray-200 dark:bg-gray-700">
+                    <thead class="bg-slate-200 dark:bg-gray-700">
                         <tr>
                             <th scope="col" class="p-4">
                                 <div class="flex items-center">
@@ -69,6 +70,7 @@ const closeModal = () => {
                             >
                                 Service name
                             </th>
+                            <!--
                             <th
                                 scope="col"
                                 class="py-3 px-6 text-left text-xs font-medium uppercase tracking-wider text-gray-700 dark:text-gray-400"
@@ -80,7 +82,7 @@ const closeModal = () => {
                                 class="py-3 px-6 text-left text-xs font-medium uppercase tracking-wider text-gray-700 dark:text-gray-400"
                             >
                                 ???
-                            </th>
+                            </th>-->
                             <th scope="col" class="p-4">
                                 <span class="sr-only">Edit</span>
                             </th>
@@ -108,10 +110,11 @@ const closeModal = () => {
                                 </div>
                             </td>
                             <td
-                                class="whitespace-nowrap py-4 px-6 text-sm font-medium text-gray-900 dark:text-white"
+                                class="whitespace-nowrap py-4 px-6 text-sm font-medium text-gray-800 dark:text-white"
                             >
                                 {{ service.name }}
                             </td>
+                            <!--
                             <td
                                 class="whitespace-nowrap py-4 px-6 text-sm font-medium text-gray-500 dark:text-white"
                             >
@@ -124,7 +127,7 @@ const closeModal = () => {
                                     class="rounded-full bg-gray-200 px-3 py-1 text-xs"
                                     >???</span
                                 >
-                            </td>
+                            </td>-->
                             <td
                                 class="whitespace-nowrap py-4 px-6 text-right text-sm font-medium"
                             >
@@ -147,16 +150,38 @@ const closeModal = () => {
             <template #title> Select organisation </template>
 
             <template #content>
-                <Link
-                    class="mb-2 block rounded border py-4 text-center"
-                    v-for="organisation in organisations"
-                    :href="
-                        route('dashboard.service.create', {
-                            organisation: organisation.id,
-                        })
-                    "
-                    >{{ organisation.name }}</Link
+                <div v-if="organisations.length">
+                    <Link
+                        class="mb-2 block rounded border py-4 text-center"
+                        v-for="organisation in organisations"
+                        :href="
+                            route('dashboard.service.create', {
+                                organisation: organisation.id,
+                            })
+                        "
+                        >{{ organisation.name }}</Link
+                    >
+                </div>
+                <div
+                    v-else
+                    class="rounded border bg-gray-50 py-36 text-center text-sm text-gray-500"
                 >
+                    <p>No organisations have been added yet.</p>
+
+                    <Link
+                        class="mt-3 inline-flex items-center rounded-md border border-transparent bg-gray-800 px-6 py-2 text-base font-semibold tracking-wide text-white transition hover:bg-gray-700 focus:border-gray-900 focus:outline-none focus:ring focus:ring-gray-300 active:bg-gray-900 disabled:opacity-25"
+                        :href="route('dashboard.organisation.create')"
+                        >Create a new organisation</Link
+                    >
+                </div>
+                <p class="mt-6 text-sm text-gray-500">
+                    Choose an existing organisation above or
+                    <Link
+                        class="text-gray-700 underline"
+                        :href="route('dashboard.organisation.create')"
+                        >create a new one</Link
+                    >.
+                </p>
             </template>
 
             <template #footer>

@@ -57,4 +57,9 @@ class Organisation extends Model
     {
         return $this->belongsToMany(Location::class);
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }

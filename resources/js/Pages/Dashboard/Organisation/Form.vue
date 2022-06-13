@@ -49,11 +49,22 @@ const updateOrganisation = () => {
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
                 {{ organisation ? "Edit organisation" : "Create organisation" }}
             </h2>
+
+            <JetButton
+                class="ml-auto"
+                :class="{ 'opacity-25': form.processing }"
+                :disabled="form.processing"
+                @click="updateOrganisation"
+            >
+                {{
+                    organisation ? "Update organisation" : "Create organisation"
+                }}
+            </JetButton>
         </template>
 
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <JetFormSection @submitted="updateOrganisation">
+                <JetFormSection>
                     <template #title>About the organisation</template>
 
                     <template #description>
@@ -136,18 +147,6 @@ const updateOrganisation = () => {
                                 class="mt-2"
                             />
                         </div>
-                    </template>
-                    <template #actions>
-                        <JetButton
-                            :class="{ 'opacity-25': form.processing }"
-                            :disabled="form.processing"
-                        >
-                            {{
-                                organisation
-                                    ? "Update organisation"
-                                    : "Create organisation"
-                            }}
-                        </JetButton>
                     </template>
                 </JetFormSection>
             </div>

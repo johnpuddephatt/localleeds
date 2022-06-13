@@ -24,7 +24,7 @@ const currentlyViewed = ref(null);
 </script>
 
 <template>
-    <div class="relative pt-[75%]">
+    <div class="relative pt-[120%] md:pt-[75%]">
         <l-map
             v-model="zoom"
             :maxZoom="12"

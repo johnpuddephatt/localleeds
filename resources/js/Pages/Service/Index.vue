@@ -42,15 +42,29 @@ const totalServices = computed(() => {
 </script>
 
 <template>
+    <Head>
+        <title>Search for a community-based service</title>
+    </Head>
+
     <FrontendLayout title="Welcome">
         <svg-vue
             class="pointer-events-none absolute right-0 top-[6.5rem] w-48 md:w-72"
             icon="searchindex_hero-upper-right"
         ></svg-vue>
         <svg-vue
-            class="top-12vh pointer-events-none absolute left-0 w-24 md:top-[35vh] md:w-60"
+            class="top-4vh pointer-events-none absolute left-0 z-10 w-16 md:top-[35vh] md:w-60"
             icon="searchindex_hero-lower-left"
         ></svg-vue>
+
+        <img
+            class="absolute top-32 right-[28rem] hidden w-32 rounded-full md:block"
+            src="/images/searchindex_hero-upper-right-1.jpg"
+        />
+        <img
+            class="absolute right-72 top-48 hidden w-40 rounded-full md:block"
+            src="/images/searchindex_hero-upper-right-2.jpg"
+        />
+
         <div
             class="container relative my-16 min-h-screen space-y-8 pt-56 xl:max-w-4xl"
         >
@@ -78,7 +92,7 @@ const totalServices = computed(() => {
                         <input
                             required
                             aria-label="Postcode"
-                            class="border-none px-6 py-4 md:w-1/4"
+                            class="flex-grow border-none px-6 py-4 md:w-1/4"
                             v-model="form.postcode"
                             type="text"
                             placeholder="Enter a postcode..."
@@ -94,7 +108,7 @@ const totalServices = computed(() => {
                     class="flex flex-col gap-4 rounded-2xl bg-blue-200 p-12 md:flex-row md:gap-8"
                 >
                     <select
-                        class="border-none px-6 py-4 md:w-1/3"
+                        class="border-none px-6 py-4 md:w-1/4"
                         v-model="form.service_category"
                     >
                         <option value="" selected>All categories</option>
@@ -103,7 +117,7 @@ const totalServices = computed(() => {
                     </select>
 
                     <select
-                        class="border-none px-6 py-4 md:w-1/3"
+                        class="border-none px-6 py-4 md:w-1/4"
                         v-model="form.service_user"
                     >
                         <option value="" selected>All people</option>
@@ -124,7 +138,7 @@ const totalServices = computed(() => {
             </form>
 
             <div
-                class="flex flex-col items-center justify-between gap-4 pt-32 md:flex-row"
+                class="flex flex-col items-center justify-between gap-4 pt-16 md:flex-row md:pt-32"
                 id="results"
             >
                 <h2 class="text-2xl font-semibold">
@@ -208,7 +222,9 @@ const totalServices = computed(() => {
                         <h3 class="text-xl font-semibold leading-tight">
                             {{ service.name }}
                         </h3>
-                        <div class="mt-1 text-lg font-semibold text-green-300">
+                        <div
+                            class="mt-1 text-base font-semibold text-green-300"
+                        >
                             {{ service.organisation }}
                         </div>
                     </div>
@@ -270,7 +286,7 @@ const totalServices = computed(() => {
             </div>
 
             <svg-vue
-                class="pointer-events-none absolute left-[100%] top-[100%] w-24"
+                class="pointer-events-none absolute right-4 top-[100%] w-24 md:left-[100%]"
                 icon="searchindex-bottom-right"
             ></svg-vue>
         </div>

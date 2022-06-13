@@ -15,6 +15,9 @@ const print = () => {
 </script>
 
 <template>
+    <Head>
+        <title>{{ service.name }} ({{ service.organisation.name }})</title>
+    </Head>
     <FrontendLayout title="Welcome">
         <div
             class="container relative mt-40 flex min-h-screen flex-col md:flex-row xl:max-w-6xl"
@@ -44,7 +47,7 @@ const print = () => {
                 </div>
 
                 <div class="space-y-8 lg:pr-12 2xl:pr-24">
-                    <div class="prose prose-lg my-24">
+                    <div class="prose prose-lg my-16 md:my-24">
                         {{ service.description }}
                     </div>
 
@@ -60,7 +63,7 @@ const print = () => {
                             This service is open to everyone
                         </p>
                         <div v-else class="mb-4">
-                            <h4 class="mt-6 font-semibold">
+                            <h4 class="mt-6 -mb-1.5 font-semibold">
                                 Who can access this service?
                             </h4>
 
@@ -110,16 +113,16 @@ const print = () => {
                                 :is="review.url ? 'a' : 'div'"
                                 :href="review.url ? review.url : null"
                                 :target="review.url ? '_blank' : null"
-                                class="flex flex-row gap-4 py-4"
+                                class="py-4"
                                 v-for="review in service.reviews"
                             >
                                 <div
-                                    class="text-bold w-1/5 text-right text-2xl"
+                                    class="mb-2 inline-block rounded-xl bg-white px-4 py-2 text-lg font-semibold"
                                 >
                                     {{ review.score }}
                                 </div>
-                                <div>
-                                    <div class="mt-1 font-medium">
+                                <div class="">
+                                    <div class="text-lg font-medium">
                                         {{ review.title }}
                                     </div>
                                     <div class="text-sm">
@@ -161,7 +164,7 @@ const print = () => {
                     </div>
 
                     <div
-                        class="relative !mt-24 rounded-2xl border-t bg-pink bg-opacity-40 p-8"
+                        class="relative !mt-24 rounded-2xl bg-pink bg-opacity-20 p-8"
                     >
                         <h2 class="text-3xl font-semibold">
                             About this organisation
@@ -189,7 +192,7 @@ const print = () => {
 
             <div class="space-y-6 pb-24 md:w-2/5 md:pl-12">
                 <svg-vue
-                    class="pointer-events-none relative z-10 -mt-8 mr-2 ml-auto w-2/3 md:mt-0"
+                    class="pointer-events-none relative z-10 -mt-8 mr-4 ml-auto -mb-[0.43rem] w-2/3 md:mt-0"
                     icon="service-right-top"
                 ></svg-vue>
                 <div
@@ -317,9 +320,9 @@ const print = () => {
                                     d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
                                 />
                             </svg>
-                            <div class="space-y-6">
+                            <div class="mt-2 space-y-6">
                                 <div v-for="contact in service.contacts">
-                                    <div class="font-medium leading-none">
+                                    <div class="mb-2 font-medium leading-tight">
                                         {{ contact.name }}
                                     </div>
                                     <div class="text-sm leading-tight">
@@ -360,7 +363,7 @@ const print = () => {
                 </button>
             </div>
             <svg-vue
-                class="pointer-events-none absolute left-[85%] top-[100%] w-24"
+                class="pointer-events-none absolute right-8 top-[100%] w-24 md:right-auto md:left-[85%]"
                 icon="service-bottom-right"
             ></svg-vue>
         </div>

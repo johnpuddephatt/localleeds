@@ -22,6 +22,8 @@
         "malhal/laravel-geographical": "^1.0",
         "outl1ne/nova-settings": "^5.0",
         "simonhamp/laravel-nova-csv-import": "^0.6.4",
+        "symfony/http-client": "^6.1",
+        "symfony/mailgun-mailer": "^6.1",
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {

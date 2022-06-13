@@ -7,7 +7,8 @@ import VueGoogleMaps from "@fawmi/vue-google-maps";
 import SvgVue from "svg-vue3";
 
 const appName =
-    window.document.getElementsByTagName("title")[0]?.innerText || "Laravel";
+    window.document.getElementsByTagName("title")[0]?.innerText ||
+    "Local Leeds";
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,

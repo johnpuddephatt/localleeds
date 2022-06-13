@@ -42,9 +42,13 @@ Route::middleware([
     config("jetstream.auth_session"),
     "verified",
 ])->group(function () {
-    Route::get("/dashboard", function () {
-        return Inertia::render("Dashboard");
-    })->name("dashboard");
+    // Route::get("/dashboard", function () {
+    //     return Inertia::render("Dashboard");
+    // })->name("dashboard");
+
+    Route::permanentRedirect("dashboard", "dashboard/organisations")->name(
+        "dashboard"
+    );
 
     Route::get("/dashboard/organisations", [
         App\Http\Controllers\Dashboard\OrganisationController::class,

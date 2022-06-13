@@ -21,35 +21,38 @@ const submitForm = () => {
 </script>
 
 <template>
+    <Head>
+        <title>Find local, community-based support</title>
+    </Head>
     <FrontendLayout title="Welcome">
         <div
             class="container relative flex min-h-screen flex-col justify-center lg:max-w-4xl"
         >
             <svg-vue
-                class="pointer-events-none absolute right-[100%] top-8 w-64"
+                class="pointer-events-none absolute right-[100%] top-8 hidden w-64 md:block"
                 icon="hero-top-left"
             ></svg-vue>
 
             <img
-                class="absolute top-16 left-[100%] w-64 rounded-full"
+                class="absolute top-16 left-[100%] hidden w-64 rounded-full md:block"
                 src="/images/hero-upper-right.jpg"
             />
             <img
-                class="absolute right-[100%] bottom-24 w-48 rounded-full"
+                class="absolute right-[100%] bottom-24 hidden w-48 rounded-full md:block"
                 src="/images/hero-lower-left.jpg"
             />
 
             <svg-vue
-                class="pointer-events-none absolute left-[70%] bottom-8 w-[35rem]"
+                class="pointer-events-none absolute left-[70%] bottom-8 hidden w-[35rem] md:block"
                 icon="hero-bottom-right"
             ></svg-vue>
 
             <h1
                 class="mb-12 text-center text-4xl font-semibold leading-tight md:text-5xl lg:text-6xl"
             >
-                Find local, community-based support in Leeds
+                Find local, community&#8209;based support in Leeds
             </h1>
-            <div class="rounded-2xl bg-blue-200 p-12">
+            <div class="mb-24 rounded-2xl bg-blue-200 p-12 md:mb-0">
                 <h2 class="text-2xl font-semibold">Search for a service</h2>
                 <form @submit.prevent="submitForm">
                     <div class="my-8 flex flex-row gap-8">

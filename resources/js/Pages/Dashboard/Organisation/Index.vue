@@ -55,7 +55,7 @@ defineProps({
                             >
                                 Organisation name
                             </th>
-                            <th
+                            <!--<th
                                 scope="col"
                                 class="py-3 px-6 text-left text-xs font-medium uppercase tracking-wider text-gray-700 dark:text-gray-400"
                             >
@@ -66,7 +66,7 @@ defineProps({
                                 class="py-3 px-6 text-left text-xs font-medium uppercase tracking-wider text-gray-700 dark:text-gray-400"
                             >
                                 Admins
-                            </th>
+                            </th>-->
                             <th scope="col" class="p-4">
                                 <span class="sr-only">Edit</span>
                             </th>
@@ -98,7 +98,7 @@ defineProps({
                             >
                                 {{ organisation.name }}
                             </td>
-                            <td
+                            <!--<td
                                 class="whitespace-nowrap py-4 px-6 text-sm font-medium text-gray-500 dark:text-white"
                             >
                                 A category
@@ -110,7 +110,7 @@ defineProps({
                                     class="rounded-full bg-gray-200 px-3 py-1 text-xs"
                                     >X admins</span
                                 >
-                            </td>
+                            </td>-->
                             <td
                                 class="whitespace-nowrap py-4 px-6 text-right text-sm font-medium"
                             >

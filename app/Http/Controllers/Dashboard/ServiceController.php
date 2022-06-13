@@ -18,8 +18,13 @@ class ServiceController extends Controller
      */
     public function index(Request $request)
     {
-        $services = Service::all();
-        $organisations = Organisation::select("id", "name")->get();
+        $services = Service::findMany(
+            \Auth::user()->organisations->pluck("id")
+        );
+        $organisations = \Auth::user()
+            ->organisations()
+            ->select("organisations.id", "name")
+            ->get();
 
         return Inertia::render(
             "Dashboard/Service/Index",

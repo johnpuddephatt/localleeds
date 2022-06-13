@@ -53,4 +53,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $appends = ["profile_photo_url"];
+
+    public function organisations()
+    {
+        return $this->belongsToMany(Organisation::class);
+    }
 }

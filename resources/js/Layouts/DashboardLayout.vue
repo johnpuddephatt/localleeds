@@ -57,12 +57,12 @@ const logout = () => {
                             <div
                                 class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex"
                             >
-                                <JetNavLink
-                                    :href="route('dashboard')"
-                                    :active="route().current('dashboard')"
-                                >
-                                    Dashboard
-                                </JetNavLink>
+                                <!-- <JetNavLink
+                                     :href="route('dashboard')"
+                                     :active="route().current('dashboard')"
+                                 >
+                                     Dashboard
+                                 </JetNavLink> -->
 
                                 <JetNavLink
                                     :href="

@@ -43,7 +43,7 @@
                 <div class="mt-4">
                     <JetLabel
                         for="accreditation_title"
-                        value="Accreditation title"
+                        value="Name of accreditor/reviewer"
                     />
 
                     <JetInput
@@ -61,7 +61,7 @@
                 <div class="mt-4">
                     <JetLabel
                         for="accreditation_description"
-                        value="Accreditation description"
+                        value="Description (optional)"
                     />
 
                     <JetTextarea
