@@ -1,7 +1,7 @@
 <template>
     <div v-if="modelValue">
         <div
-            class="h-96 overflow-hidden rounded-md border border-gray-300 pb-12 shadow-sm"
+            class="h-[300px] w-[250px] overflow-hidden rounded-md border border-gray-300 pb-[50px] shadow-sm"
         >
             <img ref="croppieEl" :src="modelValue" />
         </div>
@@ -38,7 +38,13 @@ import Croppie from "croppie";
 const croppieOptions = {
     type: "base64",
     enforceBoundary: false,
-    viewport: { width: 300, height: 300, type: "circle" },
+    viewport: { width: 250, height: 250, type: "circle" },
+    maxZoom: 3,
+    minZoom: 0.2,
+    size: {
+        width: 250,
+        height: 250,
+    },
 };
 
 const props = defineProps({

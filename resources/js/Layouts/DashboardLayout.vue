@@ -501,7 +501,10 @@ const logout = () => {
             </nav>
 
             <!-- Page Heading -->
-            <header v-if="$slots.header" class="bg-white shadow">
+            <header
+                v-if="$slots.header"
+                class="sticky top-0 z-30 bg-white shadow"
+            >
                 <div
                     class="mx-auto flex max-w-7xl flex-row items-center py-6 px-4 sm:px-6 lg:px-8"
                 >

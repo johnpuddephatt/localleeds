@@ -200,11 +200,11 @@ export default {
 }
 
 .leaflet-pane {
-    z-index: 40;
+    z-index: 10;
 }
 
 .leaflet-top,
 .leaflet-bottom {
-    z-index: 50;
+    z-index: 20;
 }
 </style>
