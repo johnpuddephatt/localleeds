@@ -169,7 +169,7 @@ const print = () => {
                         <h2 class="text-3xl font-semibold">
                             About this organisation
                         </h2>
-                        <div class="prose prose-lg my-6">
+                        <div class="prose my-6">
                             {{ service.organisation.description }}
                         </div>
                         <Link
@@ -179,7 +179,7 @@ const print = () => {
                                     organisation: service.organisation.id,
                                 })
                             "
-                            >See more</Link
+                            >More about this organisation</Link
                         >
 
                         <svg-vue

@@ -39,6 +39,7 @@ const props = defineProps({
     eligibilities: Object,
     attending_types: Object,
     attending_accesses: Object,
+    accessibility_for_disabilities: Object,
 });
 
 const form = useForm({
@@ -355,7 +356,12 @@ watch(
                         <!-- Locations -->
                         <div class="col-span-6 sm:col-span-4">
                             <JetLabel for="location" value="Locations" />
-                            <JetLocations v-model="form.locations" />
+                            <JetLocations
+                                v-model="form.locations"
+                                :accessibilities="
+                                    accessibility_for_disabilities
+                                "
+                            />
                         </div>
 
                         <!-- Postcodes -->

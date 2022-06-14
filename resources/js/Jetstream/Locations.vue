@@ -82,7 +82,7 @@
                     >
                     </GMapAutocomplete>
                 </div>
-                <div class="mt-4">
+                <div class="mt-4 mb-44">
                     <JetLabel
                         for="location_accessibilities"
                         value="Accessibility features"
@@ -94,10 +94,7 @@
                                 .accessibilities
                         "
                         class="mt-1 block w-3/4"
-                        :data="[
-                            { name: 'Step free access' },
-                            { name: 'Induction loop' },
-                        ]"
+                        :data="accessibilities"
                     />
                 </div>
             </form>
@@ -130,6 +127,7 @@ import JetSecondaryButton from "@/Jetstream/SecondaryButton.vue";
 
 const props = defineProps({
     modelValue: Array,
+    accessibilities: Object,
 });
 
 const emit = defineEmits(["update:modelValue"]);
@@ -183,7 +181,9 @@ const updateAddress = (place) => {
 
 const openLocationModal = (key) => {
     if (key == undefined) {
-        locationOptions.value.push({});
+        locationOptions.value.push({
+            accessibilities: [],
+        });
     }
     currentlyEditingLocation.value = key ?? locationOptions.value.length - 1;
     addingLocationNumber.value = true;

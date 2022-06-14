@@ -201,6 +201,12 @@ class Service extends Model
             $new_location
                 ->physicalAddress()
                 ->create($location["physical_address"]);
+
+            $new_location->accessibilityForDisabilities()->delete();
+
+            $new_location->accessibilityForDisabilities()->create([
+                "accessibility" => implode(", ", $location["accessibilities"]),
+            ]);
         }
     }
 

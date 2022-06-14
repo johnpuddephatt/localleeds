@@ -23,6 +23,29 @@ import ApplicationMark from "@/Jetstream/ApplicationMark";
         ></button>
 
         <div class="ml-8 space-x-2 sm:block">
+            <!-- <Link
+                v-if="$page.props.user && route().current('service.show')"
+                :href="
+                    route('dashboard.service.edit', {
+                        service: $page.props.service.id,
+                    })
+                "
+                class="rounded-2xl bg-yellow bg-opacity-50 px-6 py-3 font-semibold text-blue-300"
+            >
+                Edit this service
+            </Link>
+
+            <Link
+                v-if="$page.props.user && route().current('organisation.show')"
+                :href="
+                    route('dashboard.organisation.edit', {
+                        service: $page.props.organisation.id,
+                    })
+                "
+                class="rounded-2xl bg-yellow bg-opacity-50 px-6 py-3 font-semibold text-blue-300"
+            >
+                Edit this organisation
+            </Link> -->
             <Link
                 v-if="$page.props.user"
                 :href="route('dashboard')"
@@ -31,21 +54,13 @@ import ApplicationMark from "@/Jetstream/ApplicationMark";
                 Dashboard
             </Link>
 
-            <template v-else>
-                <!--<Link
-                     :href="route('login')"
-                     class="hidden rounded-2xl bg-yellow px-6 py-3 font-semibold md:inline-block"
-                 >
-                     Log in
-                 </Link>-->
-
-                <Link
-                    :href="route('register')"
-                    class="inline-block rounded-2xl bg-yellow px-6 py-3 font-semibold"
-                >
-                    Add a service
-                </Link>
-            </template>
+            <Link
+                v-else
+                :href="route('register')"
+                class="inline-block rounded-2xl bg-yellow px-6 py-3 font-semibold"
+            >
+                Add a service
+            </Link>
         </div>
     </header>
 </template>

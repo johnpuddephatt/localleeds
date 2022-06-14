@@ -23,15 +23,46 @@ return [
         "Training" => "Training",
     ],
     "accessibilities" => [
-        "accessible-toilets" => "Accessible toilets",
-        "bus-nearby" => "Bus nearby",
-        "dementia-friendly" => "Dementia friendly",
-        "disability-parking" => "Disability parking",
-        "guide-dog-friendly" => "Guide dog friendly",
-        "step-free-access" => "Step-free access",
-        "visitor-parking" => "Visitor parking",
-        "visually-impaired-friendly" => "Visually impaired friendly",
-        "wheelchair-access" => "Wheelchair access",
+        [
+            "id" => "advice",
+            "name" => "Advice",
+        ],
+        [
+            "id" => "accessible-toilets",
+            "name" => "Accessible toilets",
+        ],
+        [
+            "id" => "bus-nearby",
+            "name" => "Bus nearby",
+        ],
+        [
+            "id" => "dementia-friendly",
+            "name" => "Dementia friendly",
+        ],
+        [
+            "id" => "disability-parking",
+            "name" => "Disability parking",
+        ],
+        [
+            "id" => "guide-dog-friendly",
+            "name" => "Guide dog friendly",
+        ],
+        [
+            "id" => "step-free-access",
+            "name" => "Step-free access",
+        ],
+        [
+            "id" => "visitor-parking",
+            "name" => "Visitor parking",
+        ],
+        [
+            "id" => "visually-impaired-friendly",
+            "name" => "Visually impaired friendly",
+        ],
+        [
+            "id" => "wheelchair-access",
+            "name" => "Wheelchair access",
+        ],
     ],
     "languages" => [
         ["code" => "ab", "label" => "Abkhazian"],
