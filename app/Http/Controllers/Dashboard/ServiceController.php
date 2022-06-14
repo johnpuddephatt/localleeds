@@ -46,7 +46,10 @@ class ServiceController extends Controller
             "service_categories" => Taxonomy::where("type", "service_category")
                 ->select("id", "name")
                 ->get(),
-            "organisation_id" => $organisation->id,
+            "attending_types" => config("taxonomies.attending_types"),
+            "attending_accesses" => config("taxonomies.attending_accesses"),
+            "deliverable_types" => config("taxonomies.deliverable_types"),
+            "organisation" => $organisation,
             "languages" => config("taxonomies.languages"),
             "accessibility_for_disabilities" => config(
                 "taxonomies.accessibilities"
@@ -87,6 +90,9 @@ class ServiceController extends Controller
             "service_categories" => Taxonomy::where("type", "service_category")
                 ->select("id", "name")
                 ->get(),
+            "attending_types" => config("taxonomies.attending_types"),
+            "attending_accesses" => config("taxonomies.attending_accesses"),
+            "deliverable_types" => config("taxonomies.deliverable_types"),
             "accessibility_for_disabilities" => config(
                 "taxonomies.accessibilities"
             ),

@@ -1,6 +1,27 @@
 <?php
 
 return [
+    "attending_accesses" => [
+        "drop-in" => "Drop-in",
+        "referral" => "Referral",
+        "appointment" => "Appointment",
+        "membership" => "Membership",
+    ],
+    "attending_types" => [
+        "phone" => "Phone",
+        "online" => "Online",
+        "venue" => "Venue",
+        "home visit" => "Home visit",
+    ],
+    "deliverable_types" => [
+        "Advice" => "Advice",
+        "Assessment" => "Assessment",
+        "Counselling" => "Counselling",
+        "Equipment" => "Equipment",
+        "Financial Support" => "Financial Support",
+        "Information" => "Information",
+        "Training" => "Training",
+    ],
     "accessibilities" => [
         "accessible-toilets" => "Accessible toilets",
         "bus-nearby" => "Bus nearby",

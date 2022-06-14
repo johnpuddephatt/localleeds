@@ -1,6 +1,6 @@
 <template>
     <div class="relative mt-1 mb-4 grid w-full gap-4 xl:grid-cols-2">
-        <Combobox class="mb-auto" v-model="modelValue" multiple>
+        <Combobox class="mb-auto" v-model="selectedValues" multiple>
             <div class="relative">
                 <ComboboxInput
                     class="relative h-10 w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -80,7 +80,7 @@
         >
             <li
                 class="flex flex-row items-center justify-between py-2 px-4"
-                v-for="entry in modelValue"
+                v-for="entry in selectedValues"
                 :key="entry[itemKey]"
             >
                 {{ data.find((item) => item[itemKey] === entry)[itemValue] }}
@@ -97,7 +97,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from "vue";
+import { onMounted, ref, computed, watch } from "vue";
 import {
     Combobox,
     ComboboxInput,
@@ -115,23 +115,24 @@ const props = defineProps({
     itemValue: String,
 });
 
-//   const selectedData = ref([])
+const selectedValues = ref([]);
 const query = ref("");
 
 const emit = defineEmits(["update:modelValue"]);
 
 watch(
-    () => props.modelValue,
+    () => selectedValues,
     (first, second) => {
-        emit("update:modelValue", first);
+        emit("update:modelValue", first.value);
+    },
+    {
+        deep: true,
     }
 );
 
 function removeItem(entry) {
-    emit(
-        "update:modelValue",
-        props.modelValue.filter((obj) => obj !== entry)
-    );
+    selectedValues.value = selectedValues.value.filter((obj) => obj !== entry);
+    emit("update:modelValue", selectedValues.value);
 }
 
 const filteredData = computed(() =>
@@ -143,4 +144,12 @@ const filteredData = computed(() =>
                   .includes(query.value.toLowerCase());
           })
 );
+
+onMounted(() => {
+    selectedValues.value = props.modelValue;
+
+    if (!props.modelValue) {
+        emit("update:modelValue", []);
+    }
+});
 </script>

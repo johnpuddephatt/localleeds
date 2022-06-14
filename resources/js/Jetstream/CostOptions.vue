@@ -1,24 +1,26 @@
 <template>
     <div>
-        <ul class="divide-y rounded border" v-if="modelValue.length">
+        <ul class="mt-1 divide-y rounded border" v-if="modelValue.length">
             <li
                 class="flex flex-row gap-4 p-4"
                 v-for="(cost, key) in modelValue"
             >
                 <div>
-                    <div class="font-semibold leading-none">
+                    <div class="text-sm font-semibold">
                         {{ cost.option }}
                     </div>
-                    <div v-if="cost.amount" class="text-sm text-gray-700">
+                    <div v-if="cost.amount" class="text-xs text-gray-700">
                         £{{ cost.amount }} ({{ cost.amount_description }})
                     </div>
                     <div
                         v-if="cost.valid_from || cost.valid_to"
                         class="mt-2 text-sm"
                     >
-                        {{ cost.valid_from }}
-                        <span v-if="cost.valid_from && cost.valid_to">–</span>
-                        {{ cost.valid_to }}
+                        {{ formattedDate(cost.valid_from) }}
+                        <span v-if="cost.valid_from && cost.valid_to"
+                            >&rarr;</span
+                        >
+                        {{ formattedDate(cost.valid_to) }}
                     </div>
                 </div>
 
@@ -213,8 +215,26 @@ const openCostModal = (key) => {
     if (key == undefined) {
         costOptions.value.push({});
     }
+
     currentlyEditingCost.value = key ?? costOptions.value.length - 1;
     addingCostNumber.value = true;
+
+    if (
+        costOptions.value[currentlyEditingCost.value].valid_from ||
+        costOptions.value[currentlyEditingCost.value].valid_to
+    ) {
+        costOptionAlwaysValid.value = false;
+    } else {
+        costOptionAlwaysValid.value = true;
+    }
+
+    costOptions.value[currentlyEditingCost.value].valid_from = formattedDate(
+        costOptions.value[currentlyEditingCost.value].valid_from
+    );
+
+    costOptions.value[currentlyEditingCost.value].valid_to = formattedDate(
+        costOptions.value[currentlyEditingCost.value].valid_to
+    );
 };
 
 const cancelCostModal = () => {
@@ -234,6 +254,10 @@ const saveCost = () => {
 const removeCost = (key) => {
     costOptions.value.splice(key, 1);
     emit("update:modelValue", costOptions.value);
+};
+
+const formattedDate = (dateToBeFormatted) => {
+    return new Date(dateToBeFormatted).toISOString().split("T")[0];
 };
 </script>
 

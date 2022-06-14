@@ -12,6 +12,7 @@ import JetCheckbox from "@/Jetstream/Checkbox.vue";
 
 import JetLogo from "@/Jetstream/Logo.vue";
 import JetButton from "@/Jetstream/Button.vue";
+import JetDangerButton from "@/Jetstream/DangerButton.vue";
 import JetSecondaryButton from "@/Jetstream/SecondaryButton.vue";
 import JetPostcode from "@/Jetstream/Postcode.vue";
 import JetContacts from "@/Jetstream/Contacts.vue";
@@ -29,20 +30,21 @@ import JetListbox from "@/Jetstream/Listbox.vue";
 import JetSectionBorder from "@/Jetstream/SectionBorder";
 import JetDialogModal from "@/Jetstream/DialogModal.vue";
 
-const debug = ref(false);
-
 const props = defineProps({
     service: Object,
     languages: Array,
-    organisation_id: String,
+    organisation: Object,
     service_categories: Object,
+    deliverable_types: Object,
     eligibilities: Object,
+    attending_types: Object,
+    attending_accesses: Object,
 });
 
 const form = useForm({
     _method: "POST",
 
-    organisation_id: props.service?.organisation_id ?? props.organisation_id,
+    organisation_id: props.service?.organisation_id ?? props.organisation.id,
 
     status: props.service?.active ?? "active",
     name: props.service?.name ?? null,
@@ -55,8 +57,8 @@ const form = useForm({
     wait_time: props.service?.wait_time ?? null,
     referral_process: props.service?.referral_process ?? null,
 
-    email: props.service?.email ?? null,
-    url: props.service?.url ?? null,
+    email: props.service?.email ?? props.organisation.email,
+    url: props.service?.url ?? props.organisation.url,
     contacts: props.service?.contacts ?? [],
 
     service_areas: props.service?.service_areas ?? [],
@@ -85,7 +87,7 @@ const updateService = () => {
 
 watch(
     () => form.attending_access,
-    (newVal, oldVal) => {
+    (newVal) => {
         if (!["referral", "appointment"].includes(newVal)) {
             form.wait_time = null;
         }
@@ -95,6 +97,47 @@ watch(
         }
     },
     { deep: true }
+);
+
+const showDeleteCostOptionsModal = ref(false);
+const showDeleteEligibilitiesModal = ref(false);
+
+const cancelDeleteCostOptionsModal = () => {
+    showDeleteCostOptionsModal.value = false;
+    form.free = false;
+};
+
+const confirmDeleteCostOptionsModal = () => {
+    showDeleteCostOptionsModal.value = false;
+    form.cost_options = [];
+};
+
+watch(
+    () => form.free,
+    (newVal) => {
+        if (newVal == true && form.cost_options.length) {
+            showDeleteCostOptionsModal.value = true;
+        }
+    }
+);
+
+const cancelDeleteEligibilitiesModal = () => {
+    showDeleteEligibilitiesModal.value = false;
+    form.open_to_all = false;
+};
+
+const confirmDeleteEligibilitiesModal = () => {
+    showDeleteEligibilitiesModal.value = false;
+    form.eligibilities = [];
+};
+
+watch(
+    () => form.open_to_all,
+    (newVal) => {
+        if (newVal == true && form.eligibilities.length) {
+            showDeleteEligibilitiesModal.value = true;
+        }
+    }
 );
 
 // console.log(attending_access);
@@ -115,13 +158,6 @@ watch(
                 {{ service ? "Edit service" : "Create service" }}
             </h2>
 
-            <button
-                class="ml-4 rounded border py-1 px-3 text-xs uppercase tracking-widest text-gray-600"
-                @click="debug = !debug"
-            >
-                Debug
-            </button>
-
             <JetButton
                 :class="{ 'opacity-25': form.processing }"
                 class="-my-2 ml-auto"
@@ -131,15 +167,7 @@ watch(
                 {{ service ? "Save" : "Create" }}
             </JetButton>
         </template>
-        <div
-            class="fixed top-0 right-0 bottom-0 w-96 transform overflow-y-auto bg-black p-8 font-mono text-sm text-white transition"
-            :class="{
-                'translate-x-full': !debug,
-            }"
-        >
-            <h3 class="font-bold">Main form</h3>
-            <pre>{{ form }}</pre>
-        </div>
+
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <JetFormSection>
@@ -212,15 +240,7 @@ watch(
                             <JetSelect
                                 id="deliverable_type"
                                 v-model="form.deliverable_type"
-                                :options="{
-                                    Advice: 'Advice',
-                                    Assessment: 'Assessment',
-                                    Counselling: 'Counselling',
-                                    Equipment: 'Equipment',
-                                    'Financial Support': 'Financial Support',
-                                    Information: 'Information',
-                                    Training: 'Training',
-                                }"
+                                :options="deliverable_types"
                                 class="mt-1 block w-full"
                             />
                             <JetInputError
@@ -332,15 +352,16 @@ watch(
                     </template> -->
 
                     <template #form>
-                        <!-- Postcodes -->
-                        <div class="col-span-6 sm:col-span-4">
-                            <JetLabel value="Postcodes" />
-                            <JetPostcode v-model="form.service_areas" />
-                        </div>
                         <!-- Locations -->
                         <div class="col-span-6 sm:col-span-4">
                             <JetLabel for="location" value="Locations" />
                             <JetLocations v-model="form.locations" />
+                        </div>
+
+                        <!-- Postcodes -->
+                        <div class="col-span-6 sm:col-span-4">
+                            <JetLabel value="Postcodes this service covers" />
+                            <JetPostcode v-model="form.service_areas" />
                         </div>
                     </template>
                 </JetFormSection>
@@ -367,12 +388,7 @@ watch(
                             <JetSelect
                                 id="attending_type"
                                 v-model="form.attending_type"
-                                :options="{
-                                    phone: 'Phone',
-                                    online: 'Online',
-                                    venue: 'Venue',
-                                    'home visit': 'Home visit',
-                                }"
+                                :options="attending_types"
                                 class="mt-1 block w-full"
                             />
                             <JetInputError
@@ -390,12 +406,7 @@ watch(
                             <JetSelect
                                 id="attending_access"
                                 v-model="form.attending_access"
-                                :options="{
-                                    'drop-in': 'Drop-in',
-                                    referral: 'Referral',
-                                    appointment: 'Appointment',
-                                    membership: 'Membership',
-                                }"
+                                :options="attending_accesses"
                                 class="mt-1 block w-full"
                             />
                             <JetInputError
@@ -465,6 +476,34 @@ watch(
                             <JetCostOptions v-model="form.cost_options" />
                         </div>
 
+                        <JetDialogModal
+                            :show="showDeleteCostOptionsModal"
+                            @close="cancelDeleteCostOptionsModal"
+                        >
+                            <template #title> Remove cost options? </template>
+
+                            <template #content>
+                                Marking this service as free will remove all
+                                saved cost options. Are you sure you want to
+                                continue?
+                            </template>
+
+                            <template #footer>
+                                <JetSecondaryButton
+                                    @click="cancelDeleteCostOptionsModal"
+                                >
+                                    Cancel
+                                </JetSecondaryButton>
+
+                                <JetDangerButton
+                                    class="ml-3"
+                                    @click="confirmDeleteCostOptionsModal"
+                                >
+                                    Remove cost options
+                                </JetDangerButton>
+                            </template>
+                        </JetDialogModal>
+
                         <!-- Eligibility options -->
                         <div
                             class="col-span-6 flex flex-row gap-4 sm:col-span-4"
@@ -491,6 +530,36 @@ watch(
                                 :eligibilities="eligibilities"
                             />
                         </div>
+
+                        <JetDialogModal
+                            :show="showDeleteEligibilitiesModal"
+                            @close="cancelDeleteEligibilitiesModal"
+                        >
+                            <template #title>
+                                Remove eligibility options?
+                            </template>
+
+                            <template #content>
+                                Marking this service as open to all will remove
+                                all saved eligibility options. Are you sure you
+                                want to continue?
+                            </template>
+
+                            <template #footer>
+                                <JetSecondaryButton
+                                    @click="cancelDeleteEligibilitiesModal"
+                                >
+                                    Cancel
+                                </JetSecondaryButton>
+
+                                <JetDangerButton
+                                    class="ml-3"
+                                    @click="confirmDeleteEligibilitiesModal"
+                                >
+                                    Remove eligibility options
+                                </JetDangerButton>
+                            </template>
+                        </JetDialogModal>
                     </template>
                 </JetFormSection>
                 <JetSectionBorder />

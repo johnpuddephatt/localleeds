@@ -92,6 +92,21 @@ const updateOrganisation = () => {
                             />
                         </div>
 
+                        <!-- Organisation type -->
+                        <div class="col-span-6 sm:col-span-4">
+                            <JetLabel for="types" value="Organisation type" />
+                            <JetListbox
+                                v-model="form.types"
+                                id="organisation_type"
+                                class="mt-1 block"
+                                :data="props.organisation_types"
+                            />
+                            <JetInputError
+                                :message="form.errors.types"
+                                class="mt-2"
+                            />
+                        </div>
+
                         <!-- Logo -->
                         <div class="col-span-6 sm:col-span-4">
                             <JetLabel for="logo" value="Logo" />
@@ -147,21 +162,6 @@ const updateOrganisation = () => {
                             />
                             <JetInputError
                                 :message="form.errors.url"
-                                class="mt-2"
-                            />
-                        </div>
-
-                        <!-- Organisation type -->
-                        <div class="col-span-6 sm:col-span-4">
-                            <JetLabel for="types" value="Organisation type" />
-                            <JetListbox
-                                id="organisation_type"
-                                v-model="form.types"
-                                class="mt-1 block w-3/4"
-                                :data="props.organisation_types"
-                            />
-                            <JetInputError
-                                :message="form.errors.types"
                                 class="mt-2"
                             />
                         </div>

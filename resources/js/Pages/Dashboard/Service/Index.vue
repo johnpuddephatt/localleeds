@@ -69,20 +69,23 @@ const closeModal = () => {
                             >
                                 Service name
                             </th>
-                            <!--
+
                             <th
                                 scope="col"
                                 class="py-3 px-6 text-left text-xs font-medium uppercase tracking-wider text-gray-700 dark:text-gray-400"
                             >
-                                ???
+                                Type
                             </th>
                             <th
                                 scope="col"
                                 class="py-3 px-6 text-left text-xs font-medium uppercase tracking-wider text-gray-700 dark:text-gray-400"
                             >
-                                ???
-                            </th>-->
-                            <th scope="col" class="p-4">
+                                Last verified
+                            </th>
+                            <th scope="col" class="w-0 p-4">
+                                <span class="sr-only">View</span>
+                            </th>
+                            <th scope="col" class="w-0 p-4">
                                 <span class="sr-only">Edit</span>
                             </th>
                         </tr>
@@ -92,7 +95,7 @@ const closeModal = () => {
                     >
                         <tr
                             v-for="service in services"
-                            class="hover:bg-gray-100 dark:hover:bg-gray-700"
+                            class="hover:bg-blue-100 dark:hover:bg-gray-700"
                         >
                             <td class="w-4 p-4">
                                 <div class="flex items-center">
@@ -113,22 +116,36 @@ const closeModal = () => {
                             >
                                 {{ service.name }}
                             </td>
-                            <!--
+
                             <td
                                 class="whitespace-nowrap py-4 px-6 text-sm font-medium text-gray-500 dark:text-white"
                             >
-                                ???
-                            </td>
-                            <td
-                                class="whitespace-nowrap py-4 px-6 text-sm font-medium text-gray-900 dark:text-white"
-                            >
                                 <span
                                     class="rounded-full bg-gray-200 px-3 py-1 text-xs"
-                                    >???</span
+                                    >{{ service.deliverable_type }}</span
                                 >
-                            </td>-->
+                            </td>
                             <td
-                                class="whitespace-nowrap py-4 px-6 text-right text-sm font-medium"
+                                class="whitespace-nowrap py-4 px-6 text-sm text-gray-700 dark:text-white"
+                            >
+                                {{ service.assured_date }}
+                            </td>
+                            <td
+                                class="whitespace-nowrap py-4 px-1 text-right text-sm font-medium"
+                            >
+                                <a
+                                    target="_blank"
+                                    :href="
+                                        route('service.show', {
+                                            id: service.id,
+                                        })
+                                    "
+                                    class="rounded-2xl bg-blue-100 px-4 py-3 hover:bg-blue-200"
+                                    >View</a
+                                >
+                            </td>
+                            <td
+                                class="whitespace-nowrap py-4 px-1 pr-6 text-right text-sm font-medium"
                             >
                                 <Link
                                     :href="
@@ -136,7 +153,7 @@ const closeModal = () => {
                                             id: service.id,
                                         })
                                     "
-                                    class="text-blue-600 hover:underline dark:text-blue-500"
+                                    class="rounded-2xl bg-blue-100 px-4 py-3 hover:bg-blue-200"
                                     >Edit</Link
                                 >
                             </td>

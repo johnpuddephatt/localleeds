@@ -1,6 +1,6 @@
 <template>
     <div>
-        <ul class="divide-y rounded border" v-if="modelValue.length">
+        <ul class="mt-1 divide-y rounded border" v-if="modelValue.length">
             <li
                 class="flex flex-row gap-4 p-4"
                 v-for="(accreditation, key) in modelValue"
@@ -181,20 +181,14 @@ const openAccreditationModal = (key) => {
         key ?? accreditationOptions.value.length - 1;
     addingAccreditationNumber.value = true;
 
-    if (
-        accreditationOptions.value[currentlyEditingAccreditation.value].date
-            .length > 10
-    ) {
-        let formattedDate = new Date(
+    accreditationOptions.value[currentlyEditingAccreditation.value].date =
+        formattedDate(
             accreditationOptions.value[currentlyEditingAccreditation.value].date
         );
+};
 
-        console.log(formattedDate);
-        accreditationOptions.value[currentlyEditingAccreditation.value].date =
-            formattedDate.toISOString().split("T")[0];
-
-        console.log(formattedDate.toISOString().split("T")[0]);
-    }
+const formattedDate = (dateToBeFormatted) => {
+    return new Date(dateToBeFormatted).toISOString().split("T")[0];
 };
 
 const cancelAccreditationModal = () => {

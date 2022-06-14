@@ -67,7 +67,10 @@ defineProps({
                             >
                                 Admins
                             </th>-->
-                            <th scope="col" class="p-4">
+                            <th scope="col" class="w-0 p-4">
+                                <span class="sr-only">View</span>
+                            </th>
+                            <th scope="col" class="w-0 p-4">
                                 <span class="sr-only">Edit</span>
                             </th>
                         </tr>
@@ -112,7 +115,21 @@ defineProps({
                                 >
                             </td>-->
                             <td
-                                class="whitespace-nowrap py-4 px-6 text-right text-sm font-medium"
+                                class="whitespace-nowrap py-4 px-1 text-right text-sm font-medium"
+                            >
+                                <a
+                                    target="_blank"
+                                    :href="
+                                        route('organisation.show', {
+                                            id: organisation.id,
+                                        })
+                                    "
+                                    class="rounded-2xl bg-blue-100 px-4 py-3 hover:bg-blue-200"
+                                    >View</a
+                                >
+                            </td>
+                            <td
+                                class="whitespace-nowrap py-4 px-1 pr-6 text-right text-sm font-medium"
                             >
                                 <Link
                                     :href="
@@ -120,7 +137,7 @@ defineProps({
                                             id: organisation.id,
                                         })
                                     "
-                                    class="text-blue-600 hover:underline dark:text-blue-500"
+                                    class="rounded-2xl bg-blue-100 px-4 py-3 hover:bg-blue-200"
                                     >Edit</Link
                                 >
                             </td>

@@ -18,6 +18,11 @@ class HomeController extends Controller
         ]);
 
         return Inertia::render("Welcome", [
+            "homeServices" => \App\Models\Service::latest()
+                ->take(3)
+                ->with("organisation:id,name")
+                ->withCount("costOptions")
+                ->get(),
             "homeCategories" => \App\Models\Taxonomy::where(
                 "type",
                 "service_category"

@@ -1,5 +1,5 @@
 <template>
-    <div class="rounded border shadow-sm">
+    <div class="mt-1 rounded border shadow-sm">
         <div class="relative flex flex-col xl:h-[40vh] xl:flex-row">
             <div class="h-[40vh] w-full xl:w-[40vh]">
                 <l-map

@@ -1,12 +1,12 @@
 <template>
     <div>
-        <ul class="divide-y rounded border" v-if="modelValue.length">
+        <ul class="mt-1 divide-y rounded border" v-if="modelValue.length">
             <li
                 class="flex flex-row gap-4 p-4"
                 v-for="(eligibility, key) in modelValue"
             >
                 <div>
-                    <div class="font-semibold leading-none">
+                    <div class="text-sm font-semibold">
                         <span v-for="(tag_id, key) in eligibility.tags">
                             {{
                                 eligibilities.find((item) => item.id == tag_id)
@@ -17,7 +17,7 @@
                                 class="text-gray-400"
                                 v-if="key + 1 < eligibility.tags.length"
                             >
-                                and
+                                &nbsp;and&nbsp;
                             </span>
                         </span>
 
@@ -29,7 +29,7 @@
                                 (eligibility.minimum_age ||
                                     eligibility.maximum_age)
                             "
-                            >and</span
+                            >&nbsp;and&nbsp;</span
                         >
 
                         {{ eligibility.minimum_age ?? "No minimum age" }} to
@@ -176,7 +176,11 @@ watch(
 
 const openEligibilityModal = (key) => {
     if (key == undefined) {
-        eligibilityOptions.value.push({});
+        eligibilityOptions.value.push({
+            minimum_age: null,
+            maximum_age: null,
+            tags: [],
+        });
     }
     currentlyEditingEligibility.value =
         key ?? eligibilityOptions.value.length - 1;

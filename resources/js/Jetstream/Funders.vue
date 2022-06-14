@@ -1,6 +1,6 @@
 <template>
     <div>
-        <ul class="divide-y rounded border" v-if="modelValue.length">
+        <ul class="mt-1 divide-y rounded border" v-if="modelValue.length">
             <li
                 class="flex flex-row gap-4 p-4"
                 v-for="(funding, key) in modelValue"

@@ -3,6 +3,7 @@ import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
 import FrontendLayout from "@/Layouts/FrontendLayout.vue";
 
 defineProps({
+    homeServices: Object,
     homeCategories: Array,
     homeFeaturedCategories: Array,
 });
@@ -102,11 +103,79 @@ const submitForm = () => {
             </div>
         </div>
 
+        <div class="container mx-auto mb-32 max-w-4xl space-y-6">
+            <h2 class="!mb-12 text-4xl font-semibold">Latest services</h2>
+
+            <Link
+                :href="route('service.show', { id: service.id })"
+                v-for="service in homeServices"
+                class="flex flex-col justify-between gap-4 rounded-lg bg-blue-100 p-8 md:flex-row"
+            >
+                <div>
+                    <h3 class="text-xl font-semibold leading-tight">
+                        {{ service.name }}
+                    </h3>
+                    <div class="mt-1 text-base font-semibold text-green-300">
+                        {{ service.organisation.name }}
+                    </div>
+                </div>
+                <div
+                    class="ml-auto flex flex-none flex-row gap-2 md:ml-0 md:gap-4"
+                >
+                    <div
+                        v-if="!service.cost_options_count"
+                        class="font-semibold text-green-300"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="ml-1 -mt-1 inline-block h-6 w-6 text-green-200 opacity-80"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M15 9a2 2 0 10-4 0v5a2 2 0 01-2 2h6m-6-4h4m8 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                        </svg>
+                        Free
+                    </div>
+                    <div
+                        v-if="service.distance && filters.postcode"
+                        class="font-semibold text-green-300"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="ml-1 -mt-1 inline-block h-6 w-6 text-green-200 opacity-80"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                            />
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                            />
+                        </svg>
+                        {{ service.distance }} miles away
+                    </div>
+                </div>
+            </Link>
+        </div>
+
         <div class="container mx-auto mb-24 max-w-6xl space-y-12">
             <h2 class="text-4xl font-semibold">Browse by category</h2>
 
             <div
-                class="grid grid-cols-1 gap-36 pt-36 md:grid-cols-3 md:gap-12 md:pt-48"
+                class="grid grid-cols-1 gap-36 pt-24 md:grid-cols-3 md:gap-12 md:pt-48"
             >
                 <Link
                     :href="
