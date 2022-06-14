@@ -10,6 +10,7 @@ class AccessibilityForDisabilities extends Model
 {
     use HasFactory;
     use UuidTrait;
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.
