@@ -8,6 +8,14 @@ use Laravel\Nova\Http\Middleware\DispatchServingNovaEvent;
 use Laravel\Nova\Http\Middleware\HandleInertiaRequests;
 
 return [
+    "brand" => [
+        "logo" => resource_path("/images/logo.svg"),
+        "colors" => [
+            "400" => "99, 129, 129, 0.5",
+            "500" => "99, 129, 129",
+            "600" => "99, 129, 129, 0.75",
+        ],
+    ],
     /*
     |--------------------------------------------------------------------------
     | Nova License Key

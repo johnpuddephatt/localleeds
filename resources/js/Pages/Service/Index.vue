@@ -222,6 +222,12 @@ const totalServices = computed(() => {
             </div>
 
             <template v-if="view == 'list'">
+                <div
+                    class="rounded-2xl bg-blue-100 px-8 py-24 text-center text-sm"
+                    v-if="!services.data.length"
+                >
+                    No services found.
+                </div>
                 <Link
                     :href="route('service.show', { id: service.id })"
                     v-for="service in services.data"

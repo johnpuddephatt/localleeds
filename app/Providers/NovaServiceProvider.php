@@ -20,6 +20,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         parent::boot();
 
+        Nova::footer(function ($request) {
+            return "";
+        });
+
         \Outl1ne\NovaSettings\NovaSettings::addSettingsFields(
             [
                 Panel::make("Position one", [

@@ -15,11 +15,13 @@ import ApplicationMark from "@/Jetstream/ApplicationMark";
                 <ApplicationMark class="mr-1 inline-block h-10 w-10" />
                 <div>
                     <div
-                        class="text-2xl font-bold leading-none tracking-tighter text-green-100"
+                        class="text-3xl font-bold leading-none tracking-tighter text-green-100"
                     >
                         <span class="text-white">Local</span>Leeds
                     </div>
-                    <div class="text-sm font-bold text-white">
+                    <div
+                        class="text-sm font-bold leading-none tracking-tight text-white"
+                    >
                         Find local, community‑based support in Leeds
                     </div>
                 </div>

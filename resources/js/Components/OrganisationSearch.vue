@@ -81,6 +81,12 @@ const closeSearch = (event) => {
             >
                 {{ organisation.name }}
             </Link>
+            <div
+                class="py-20 text-center text-sm text-gray-500"
+                v-if="!filteredOrganisations.length"
+            >
+                No organisations found
+            </div>
         </div>
     </div>
 </template>
