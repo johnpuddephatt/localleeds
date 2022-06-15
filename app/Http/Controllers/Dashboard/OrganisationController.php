@@ -17,7 +17,9 @@ class OrganisationController extends Controller
      */
     public function index(Request $request)
     {
-        $organisations = \Auth::user()->organisations;
+        $organisations = \Auth::user()->isAdministrator()
+            ? Organisation::all()
+            : \Auth::user()->organisations;
 
         return Inertia::render(
             "Dashboard/Organisation/Index",
@@ -31,6 +33,10 @@ class OrganisationController extends Controller
      */
     public function edit(Request $request, Organisation $organisation)
     {
+        if ($request->user()->cannot("edit", $organisation)) {
+            abort(403);
+        }
+
         $organisation_types = Taxonomy::where("type", "organisation_type")
             ->select("id", "name")
             ->get();
@@ -85,6 +91,10 @@ class OrganisationController extends Controller
         OrganisationRequest $request,
         Organisation $organisation
     ) {
+        if ($request->user()->cannot("update", $organisation)) {
+            abort(403);
+        }
+
         $organisation->update($request->validated());
 
         $organisation->types()->sync($request->types);

@@ -23,6 +23,9 @@ class ServiceController extends Controller
 
         return Inertia::render("Service/Show", [
             "service" => $service,
+            "canEdit" => $request->user()
+                ? $request->user()->can("edit", $service)
+                : false,
         ]);
     }
 

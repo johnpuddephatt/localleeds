@@ -14,13 +14,15 @@ return [
         "home visit" => "Home visit",
     ],
     "deliverable_types" => [
+        "Activities" => "Activities",
         "Advice" => "Advice",
         "Assessment" => "Assessment",
         "Counselling" => "Counselling",
-        "Equipment" => "Equipment",
+        "Training" => "Education or training",
+        "Equipment" => "Equipment or facilities",
         "Financial Support" => "Financial Support",
         "Information" => "Information",
-        "Training" => "Training",
+        "Other" => "Other",
     ],
     "accessibilities" => [
         [

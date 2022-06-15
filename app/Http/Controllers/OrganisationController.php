@@ -28,6 +28,9 @@ class OrganisationController extends Controller
         return Inertia::render("Organisation/Show", [
             "organisation" => $organisation->load("types:name"),
             "services" => $services,
+            "canEdit" => $request->user()
+                ? $request->user()->can("edit", $organisation)
+                : false,
         ]);
     }
 

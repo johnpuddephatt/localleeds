@@ -58,4 +58,14 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Organisation::class);
     }
+
+    public function isAdministrator()
+    {
+        return $this->admin_level > 0;
+    }
+
+    public function isSuperAdministrator()
+    {
+        return $this->admin_level > 1;
+    }
 }

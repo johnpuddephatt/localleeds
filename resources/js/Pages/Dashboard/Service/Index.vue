@@ -69,6 +69,12 @@ const closeModal = () => {
                             >
                                 Service name
                             </th>
+                            <th
+                                scope="col"
+                                class="py-3 px-6 text-left text-xs font-medium uppercase tracking-wider text-gray-700 dark:text-gray-400"
+                            >
+                                Organisation name
+                            </th>
 
                             <th
                                 scope="col"
@@ -95,7 +101,7 @@ const closeModal = () => {
                     >
                         <tr
                             v-for="service in services"
-                            class="hover:bg-blue-100 dark:hover:bg-gray-700"
+                            class="hover:bg-green-100 dark:hover:bg-gray-700"
                         >
                             <td class="w-4 p-4">
                                 <div class="flex items-center">
@@ -118,9 +124,16 @@ const closeModal = () => {
                             </td>
 
                             <td
+                                class="whitespace-nowrap py-4 px-6 text-sm font-medium text-gray-800 dark:text-white"
+                            >
+                                {{ service.organisation.name }}
+                            </td>
+
+                            <td
                                 class="whitespace-nowrap py-4 px-6 text-sm font-medium text-gray-500 dark:text-white"
                             >
                                 <span
+                                    v-if="service.deliverable_type"
                                     class="rounded-full bg-gray-200 px-3 py-1 text-xs"
                                     >{{ service.deliverable_type }}</span
                                 >

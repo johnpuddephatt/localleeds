@@ -23,8 +23,8 @@ import ApplicationMark from "@/Jetstream/ApplicationMark";
         ></button>
 
         <div class="ml-8 space-x-2 sm:block">
-            <!-- <Link
-                v-if="$page.props.user && route().current('service.show')"
+            <Link
+                v-if="$page.props.canEdit && route().current('service.show')"
                 :href="
                     route('dashboard.service.edit', {
                         service: $page.props.service.id,
@@ -36,16 +36,19 @@ import ApplicationMark from "@/Jetstream/ApplicationMark";
             </Link>
 
             <Link
-                v-if="$page.props.user && route().current('organisation.show')"
+                v-if="
+                    $page.props.canEdit && route().current('organisation.show')
+                "
                 :href="
                     route('dashboard.organisation.edit', {
-                        service: $page.props.organisation.id,
+                        organisation: $page.props.organisation.id,
                     })
                 "
                 class="rounded-2xl bg-yellow bg-opacity-50 px-6 py-3 font-semibold text-blue-300"
             >
                 Edit this organisation
-            </Link> -->
+            </Link>
+
             <Link
                 v-if="$page.props.user"
                 :href="route('dashboard')"

@@ -90,7 +90,7 @@ Route::middleware([
         "edit",
     ])->name("dashboard.service.edit");
 
-    Route::post("/dashboard/services/create", [
+    Route::post("/dashboard/services/create/{organisation}", [
         App\Http\Controllers\Dashboard\ServiceController::class,
         "store",
     ])->name("dashboard.service.store");

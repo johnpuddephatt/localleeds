@@ -79,7 +79,9 @@ const updateService = () => {
     form.post(
         props.service
             ? route("dashboard.service.update", { service: props.service.id })
-            : route("dashboard.service.store"),
+            : route("dashboard.service.store", {
+                  organisation: props.organisation.id,
+              }),
         {
             errorBag: "updateService",
         }
@@ -141,7 +143,6 @@ watch(
     }
 );
 
-// console.log(attending_access);
 // if (!["referral", "appointment"].includes(attending_access)) {
 //     form.wait_time = null;
 // }
@@ -366,8 +367,10 @@ watch(
 
                         <!-- Postcodes -->
                         <div class="col-span-6 sm:col-span-4">
-                            <JetLabel value="Postcodes this service covers" />
-                            <JetPostcode v-model="form.service_areas" />
+                            <JetPostcode
+                                :newService="service ? false : true"
+                                v-model="form.service_areas"
+                            />
                         </div>
                     </template>
                 </JetFormSection>

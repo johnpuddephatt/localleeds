@@ -19,16 +19,28 @@ class ServiceController extends Controller
      */
     public function index(Request $request)
     {
-        $services = \Auth::user()->organisations->count()
-            ? Service::where(
-                "organisation_id",
-                \Auth::user()->organisations->pluck("id")
-            )->get()
-            : [];
-        $organisations = \Auth::user()
-            ->organisations()
-            ->select("organisations.id", "name")
-            ->get();
+        if ($request->user()->isAdministrator()) {
+            $services = Service::with("organisation:id,name")->get();
+            $organisations = Organisation::select(
+                "organisations.id",
+                "name"
+            )->get();
+        } else {
+            $services = $request->user()->organisations->count()
+                ? Service::where(
+                    "organisation_id",
+                    $request->user()->organisations->pluck("id")
+                )
+                    ->with("organisation:id,name")
+                    ->get()
+                : [];
+
+            $organisations = $request
+                ->user()
+                ->organisations()
+                ->select("organisations.id", "name")
+                ->get();
+        }
 
         return Inertia::render(
             "Dashboard/Service/Index",
@@ -42,6 +54,10 @@ class ServiceController extends Controller
      */
     public function create(Request $request, Organisation $organisation)
     {
+        if ($request->user()->cannot("createService", $organisation)) {
+            abort(403);
+        }
+
         return Inertia::render("Dashboard/Service/Form", [
             "service_categories" => Taxonomy::where("type", "service_category")
                 ->select("id", "name")
@@ -66,6 +82,10 @@ class ServiceController extends Controller
      */
     public function edit(Request $request, Service $service)
     {
+        if ($request->user()->cannot("edit", $service)) {
+            abort(403);
+        }
+
         $service->languages = $service->languages()->pluck("language");
 
         $service->categories = $service->categories()->pluck("id");
@@ -107,8 +127,12 @@ class ServiceController extends Controller
      * @param \App\Http\Requests\ServiceRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ServiceRequest $request)
+    public function store(ServiceRequest $request, Organisation $organisation)
     {
+        if ($request->user()->cannot("storeService", $organisation)) {
+            abort(403);
+        }
+
         $service = Service::create($request->validated());
 
         $service->updateLanguages($request->languages);
@@ -132,6 +156,10 @@ class ServiceController extends Controller
      */
     public function update(ServiceRequest $request, Service $service)
     {
+        if ($request->user()->cannot("update", $service)) {
+            abort(403);
+        }
+
         $service->update($request->validated());
 
         $service->updateLanguages($request->languages);
