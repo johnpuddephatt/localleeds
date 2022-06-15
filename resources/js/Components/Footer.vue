@@ -12,10 +12,10 @@ import ApplicationMark from "@/Jetstream/ApplicationMark";
         ></svg-vue>
         <div class="container flex flex-row items-center">
             <Link class="flex flex-row" :href="route('home')">
-                <ApplicationMark class="mr-1 inline-block h-12 w-12" />
+                <ApplicationMark class="mr-1 inline-block h-10 w-10" />
                 <div>
                     <div
-                        class="text-3xl font-bold leading-none tracking-tighter text-green-100"
+                        class="text-2xl font-bold leading-none tracking-tighter text-green-100"
                     >
                         <span class="text-white">Local</span>Leeds
                     </div>

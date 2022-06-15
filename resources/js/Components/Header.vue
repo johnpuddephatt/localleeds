@@ -9,10 +9,10 @@ import ApplicationMark from "@/Jetstream/ApplicationMark";
         class="container flex flex-row items-center justify-center py-4 print:hidden md:justify-start"
     >
         <Link
-            class="text-3xl font-bold tracking-tighter text-blue-300"
+            class="text-2xl font-bold tracking-tighter text-blue-300"
             :href="route('home')"
         >
-            <ApplicationMark class="mr-1 inline-block h-12 w-12" />
+            <ApplicationMark class="mr-1 inline-block h-10 w-10" />
             <span class="text-green-300">Local</span>Leeds</Link
         >
         <organisation-search />
