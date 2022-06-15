@@ -18,7 +18,14 @@ class Taxonomy extends Model
      *
      * @var array
      */
-    protected $fillable = ["parent_id", "name", "vocabulary", "type"];
+    protected $fillable = [
+        "parent_id",
+        "name",
+        "vocabulary",
+        "type",
+        "label",
+        "featured",
+    ];
 
     public function taxonomies()
     {
