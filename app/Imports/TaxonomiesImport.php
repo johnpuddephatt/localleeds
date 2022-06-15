@@ -24,7 +24,7 @@ class TaxonomiesImport implements ToModel
             "id" => Str::uuid(36),
             "name" => $row[0],
             "label" => $row[1],
-            "featured" => $row[2],
+            "featured" => $row[2] ?? false,
             "type" => $this->type,
             "vocabulary" => $this->vocabulary,
         ]);
