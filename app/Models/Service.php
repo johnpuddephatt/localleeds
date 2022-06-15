@@ -52,7 +52,7 @@ class Service extends Model
      * @var array
      */
     protected $casts = [
-        "assured_date" => "date:nS F Y",
+        "assured_date" => "date:jS F Y",
     ];
 
     public function locations()

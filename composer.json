@@ -19,6 +19,7 @@
         "laravel/nova": "~4.0",
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
+        "maatwebsite/excel": "^3.1",
         "madewithlove/laravel-nova-uuid-support": "^1.4",
         "malhal/laravel-geographical": "^1.0",
         "outl1ne/nova-settings": "^5.0",
