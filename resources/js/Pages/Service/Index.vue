@@ -121,7 +121,7 @@ const totalServices = computed(() => {
                             v-for="service_category in service_categories"
                             :value="service_category.id"
                         >
-                            {{ service_category.name }}
+                            {{ service_category.label }}
                         </option>
                     </select>
 

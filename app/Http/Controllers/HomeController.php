@@ -27,6 +27,7 @@ class HomeController extends Controller
                 "type",
                 "service_category"
             )
+                ->where("featured")
                 ->whereNotIn(
                     "id",
                     nova_get_settings([
@@ -35,7 +36,7 @@ class HomeController extends Controller
                         "featured_category_2",
                     ])
                 )
-                ->select("id", "name")
+                ->select("id", "label")
                 ->get(),
             "homeFeaturedCategories" => \App\Models\Taxonomy::whereIn(
                 "id",
@@ -48,7 +49,7 @@ class HomeController extends Controller
                 ->map(function ($item, $key) {
                     return [
                         "id" => $item->id,
-                        "name" => $item->name,
+                        "label" => $item->label,
                         "image" => Storage::url(
                             nova_get_setting("featured_category_{$key}_image")
                         ),

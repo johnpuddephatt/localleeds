@@ -16,7 +16,7 @@ defineProps({ filters: Object, serviceCategories: Object });
         {{
             serviceCategories.find(
                 (category) => category.id == filters.service_category
-            )?.name
+            )?.label
         }}
         services
     </h1>

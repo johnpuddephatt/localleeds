@@ -97,7 +97,7 @@ class ServiceController extends Controller
                 "type",
                 "service_category"
             )
-                ->select("id", "name")
+                ->select("id", "label")
                 ->get(),
         ]);
     }

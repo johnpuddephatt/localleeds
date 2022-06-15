@@ -73,7 +73,7 @@ const submitForm = () => {
                                 v-for="category in homeFeaturedCategories"
                                 :value="category.id"
                             >
-                                {{ category.name }}
+                                {{ category.label }}
                             </option>
                             <option disabled value=""></option>
 
@@ -81,7 +81,7 @@ const submitForm = () => {
                                 v-for="category in homeCategories"
                                 :value="category.id"
                             >
-                                {{ category.name }}
+                                {{ category.label }}
                             </option>
                         </select>
 
@@ -191,7 +191,7 @@ const submitForm = () => {
                         class="mx-auto -mt-48 w-72"
                     />
                     <h3 class="my-4 text-2xl font-semibold text-green-400">
-                        {{ homeFeaturedCategory.name }}
+                        {{ homeFeaturedCategory.label }}
                     </h3>
                     <p>
                         Lorem ipsum dolor sit amet, consectetuer adipiscing
@@ -208,7 +208,7 @@ const submitForm = () => {
                     <h3
                         class="mb-4 flex flex-row justify-between gap-2 text-2xl font-semibold text-green-400"
                     >
-                        {{ homeCategory.name }}
+                        {{ homeCategory.label }}
 
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
