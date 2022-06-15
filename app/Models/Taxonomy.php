@@ -27,6 +27,10 @@ class Taxonomy extends Model
         "featured",
     ];
 
+    protected $casts = [
+        "featured" => "boolean",
+    ];
+
     public function taxonomies()
     {
         return $this->hasMany(Taxonomy::class);
