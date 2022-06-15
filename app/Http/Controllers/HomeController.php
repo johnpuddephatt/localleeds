@@ -27,7 +27,7 @@ class HomeController extends Controller
                 "type",
                 "service_category"
             )
-                ->where("featured")
+                ->where("featured", true)
                 ->whereNotIn(
                     "id",
                     nova_get_settings([
