@@ -6,6 +6,9 @@ return [
         "referral" => "Referral",
         "appointment" => "Appointment",
         "membership" => "Membership",
+        "Self-referral" => "Self-referral",
+        "Referral from a professional" => "Referral from a professional",
+        "Register/sign-up to attend" => "Register/sign-up to attend",
     ],
     "attending_types" => [
         "phone" => "Phone",

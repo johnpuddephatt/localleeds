@@ -204,9 +204,14 @@ class Service extends Model
 
             $new_location->accessibilityForDisabilities()->delete();
 
-            $new_location->accessibilityForDisabilities()->create([
-                "accessibility" => implode(", ", $location["accessibilities"]),
-            ]);
+            if (isset($location["accessibilities"])) {
+                $new_location->accessibilityForDisabilities()->create([
+                    "accessibility" => implode(
+                        ", ",
+                        $location["accessibilities"]
+                    ),
+                ]);
+            }
         }
     }
 
