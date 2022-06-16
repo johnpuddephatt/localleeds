@@ -1,5 +1,14 @@
 <template>
-    <div>
+    <div class="col-span-6 my-2 flex flex-row gap-4 sm:col-span-4">
+        <JetCheckbox
+            id="open_to_all"
+            name="open_to_all"
+            :checked="open_to_all"
+            v-model="open_to_all"
+        />
+        <JetLabel for="open_to_all" value="This service is open to everyone" />
+    </div>
+    <div v-if="!open_to_all">
         <ul class="mt-1 divide-y rounded border" v-if="modelValue.length">
             <li
                 class="flex flex-row gap-4 p-4"
@@ -139,7 +148,33 @@
             </JetButton>
         </template>
     </JetDialogModal>
+
+    <JetDialogModal
+        :show="showDeleteEligibilitiesModal"
+        @close="cancelDeleteEligibilitiesModal"
+    >
+        <template #title> Remove eligibility options? </template>
+
+        <template #content>
+            Marking this service as open to all will remove all saved
+            eligibility options. Are you sure you want to continue?
+        </template>
+
+        <template #footer>
+            <JetSecondaryButton @click="cancelDeleteEligibilitiesModal">
+                Cancel
+            </JetSecondaryButton>
+
+            <JetDangerButton
+                class="ml-3"
+                @click="confirmDeleteEligibilitiesModal"
+            >
+                Remove eligibility options
+            </JetDangerButton>
+        </template>
+    </JetDialogModal>
 </template>
+
 <script setup>
 import { onMounted, ref, watch } from "vue";
 import JetLabel from "@/Jetstream/Label.vue";
@@ -148,6 +183,8 @@ import JetDialogModal from "@/Jetstream/DialogModal.vue";
 import JetButton from "@/Jetstream/Button.vue";
 import JetSelect from "@/Jetstream/Select.vue";
 import JetSecondaryButton from "@/Jetstream/SecondaryButton.vue";
+import JetDangerButton from "@/Jetstream/DangerButton.vue";
+import JetCheckbox from "@/Jetstream/Checkbox.vue";
 import JetListbox from "@/Jetstream/Listbox.vue";
 
 const form = ref(null);
@@ -158,6 +195,8 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["update:modelValue"]);
+
+const open_to_all = ref(true);
 
 const addingEligibilityNumber = ref(false);
 const currentlyEditingEligibility = ref(null);
@@ -190,6 +229,10 @@ const openEligibilityModal = (key) => {
 const cancelEligibilityModal = () => {
     eligibilityOptions.value = JSON.parse(JSON.stringify(props.modelValue));
     addingEligibilityNumber.value = false;
+
+    if (!props.modelValue.length) {
+        open_to_all.value = true;
+    }
 };
 
 const saveEligibility = () => {
@@ -205,6 +248,31 @@ const removeEligibility = (key) => {
     eligibilityOptions.value.splice(key, 1);
     emit("update:modelValue", eligibilityOptions.value);
 };
+
+const showDeleteEligibilitiesModal = ref(false);
+
+const cancelDeleteEligibilitiesModal = () => {
+    showDeleteEligibilitiesModal.value = false;
+    open_to_all.value = false;
+};
+
+const confirmDeleteEligibilitiesModal = () => {
+    showDeleteEligibilitiesModal.value = false;
+    emit("update:modelValue", []);
+};
+
+watch(
+    () => open_to_all.value,
+    (newVal) => {
+        if (newVal == true && props.modelValue.length) {
+            showDeleteEligibilitiesModal.value = true;
+        }
+
+        if (newVal == false) {
+            openEligibilityModal();
+        }
+    }
+);
 </script>
 
 <style></style>

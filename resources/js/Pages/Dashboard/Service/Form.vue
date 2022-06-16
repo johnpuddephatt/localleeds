@@ -64,8 +64,6 @@ const form = useForm({
 
     service_areas: props.service?.service_areas ?? [],
 
-    free: !!!props.service?.cost_options.length ?? true,
-    open_to_all: !!!props.service?.eligibilities.length ?? true,
     cost_options: props.service?.cost_options ?? [],
     eligibilities: props.service?.eligibilities ?? [],
     fundings: props.service?.fundings ?? [],
@@ -100,47 +98,6 @@ watch(
         }
     },
     { deep: true }
-);
-
-const showDeleteCostOptionsModal = ref(false);
-const showDeleteEligibilitiesModal = ref(false);
-
-const cancelDeleteCostOptionsModal = () => {
-    showDeleteCostOptionsModal.value = false;
-    form.free = false;
-};
-
-const confirmDeleteCostOptionsModal = () => {
-    showDeleteCostOptionsModal.value = false;
-    form.cost_options = [];
-};
-
-watch(
-    () => form.free,
-    (newVal) => {
-        if (newVal == true && form.cost_options.length) {
-            showDeleteCostOptionsModal.value = true;
-        }
-    }
-);
-
-const cancelDeleteEligibilitiesModal = () => {
-    showDeleteEligibilitiesModal.value = false;
-    form.open_to_all = false;
-};
-
-const confirmDeleteEligibilitiesModal = () => {
-    showDeleteEligibilitiesModal.value = false;
-    form.eligibilities = [];
-};
-
-watch(
-    () => form.open_to_all,
-    (newVal) => {
-        if (newVal == true && form.eligibilities.length) {
-            showDeleteEligibilitiesModal.value = true;
-        }
-    }
 );
 
 // if (!["referral", "appointment"].includes(attending_access)) {
@@ -467,108 +424,24 @@ watch(
                             />
                         </div>
 
-                        <!-- Cost options -->
-                        <div
-                            class="col-span-6 flex flex-row gap-4 sm:col-span-4"
-                        >
-                            <JetCheckbox
-                                id="free"
-                                name="free"
-                                :checked="form.free"
-                                v-model="form.free"
-                            />
-                            <JetLabel for="free" value="This service is free" />
-                        </div>
-
-                        <div v-if="!form.free" class="col-span-6 sm:col-span-4">
+                        <div class="col-span-6 sm:col-span-4">
                             <JetLabel value="Cost options" />
                             <JetCostOptions v-model="form.cost_options" />
                         </div>
 
-                        <JetDialogModal
-                            :show="showDeleteCostOptionsModal"
-                            @close="cancelDeleteCostOptionsModal"
-                        >
-                            <template #title> Remove cost options? </template>
-
-                            <template #content>
-                                Marking this service as free will remove all
-                                saved cost options. Are you sure you want to
-                                continue?
-                            </template>
-
-                            <template #footer>
-                                <JetSecondaryButton
-                                    @click="cancelDeleteCostOptionsModal"
-                                >
-                                    Cancel
-                                </JetSecondaryButton>
-
-                                <JetDangerButton
-                                    class="ml-3"
-                                    @click="confirmDeleteCostOptionsModal"
-                                >
-                                    Remove cost options
-                                </JetDangerButton>
-                            </template>
-                        </JetDialogModal>
-
                         <!-- Eligibility options -->
-                        <div
-                            class="col-span-6 flex flex-row gap-4 sm:col-span-4"
-                        >
-                            <JetCheckbox
-                                id="open_to_all"
-                                name="open_to_all"
-                                :checked="form.open_to_all"
-                                v-model="form.open_to_all"
-                            />
-                            <JetLabel
-                                for="open_to_all"
-                                value="This service is open to everyone"
-                            />
-                        </div>
 
                         <div
                             v-if="!form.open_to_all"
                             class="col-span-6 sm:col-span-4"
                         >
-                            <JetLabel value="Eligibility requirements" />
+                            <JetLabel value="Who this service is for" />
+
                             <JetEligibilities
                                 v-model="form.eligibilities"
                                 :eligibilities="eligibilities"
                             />
                         </div>
-
-                        <JetDialogModal
-                            :show="showDeleteEligibilitiesModal"
-                            @close="cancelDeleteEligibilitiesModal"
-                        >
-                            <template #title>
-                                Remove eligibility options?
-                            </template>
-
-                            <template #content>
-                                Marking this service as open to all will remove
-                                all saved eligibility options. Are you sure you
-                                want to continue?
-                            </template>
-
-                            <template #footer>
-                                <JetSecondaryButton
-                                    @click="cancelDeleteEligibilitiesModal"
-                                >
-                                    Cancel
-                                </JetSecondaryButton>
-
-                                <JetDangerButton
-                                    class="ml-3"
-                                    @click="confirmDeleteEligibilitiesModal"
-                                >
-                                    Remove eligibility options
-                                </JetDangerButton>
-                            </template>
-                        </JetDialogModal>
                     </template>
                 </JetFormSection>
                 <JetSectionBorder />

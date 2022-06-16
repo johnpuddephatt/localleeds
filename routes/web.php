@@ -90,6 +90,11 @@ Route::middleware([
         "edit",
     ])->name("dashboard.service.edit");
 
+    Route::delete("/dashboard/services/{service}/delete", [
+        App\Http\Controllers\Dashboard\ServiceController::class,
+        "delete",
+    ])->name("dashboard.service.delete");
+
     Route::post("/dashboard/services/create/{organisation}", [
         App\Http\Controllers\Dashboard\ServiceController::class,
         "store",

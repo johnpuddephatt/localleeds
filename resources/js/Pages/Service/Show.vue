@@ -299,6 +299,7 @@ const print = () => {
                                     service.url
                                         .replace("https://", "")
                                         .replace("http://", "")
+                                        .replace("www.", "")
                                 }}</span></a
                             >
                         </div>
@@ -325,7 +326,13 @@ const print = () => {
                                     <div class="mb-2 font-medium leading-tight">
                                         {{ contact.name }}
                                     </div>
-                                    <div class="text-sm leading-tight">
+                                    <div
+                                        class="text-sm leading-tight"
+                                        v-if="
+                                            contact.title &&
+                                            contact.title != contact.name
+                                        "
+                                    >
                                         {{ contact.title }}
                                     </div>
                                     <div class="mt-2 text-sm">

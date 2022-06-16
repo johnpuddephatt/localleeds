@@ -146,6 +146,9 @@ class ServiceController extends Controller
 
         $service->categories()->sync($request->service_categories);
 
+        session()->flash("flash.banner", "Service succesfully created.");
+        session()->flash("flash.bannerStyle", "success");
+
         return redirect()->route("dashboard.service.index");
     }
 
@@ -173,6 +176,18 @@ class ServiceController extends Controller
 
         $service->categories()->sync($request->service_categories);
 
+        return redirect()->route("dashboard.service.index");
+    }
+
+    public function delete(Request $request, Service $service)
+    {
+        if ($request->user()->cannot("delete", $service)) {
+            abort(403);
+        }
+        $service->delete();
+
+        session()->flash("flash.banner", "Service succesfully deleted.");
+        session()->flash("flash.bannerStyle", "success");
         return redirect()->route("dashboard.service.index");
     }
 }

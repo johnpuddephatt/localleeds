@@ -7,6 +7,7 @@ use Illuminate\Validation\Rules;
 use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -50,6 +51,12 @@ class Taxonomy extends Resource
             Text::make("Name")
                 ->sortable()
                 ->rules("required", "max:50"),
+
+            Text::make("Public-facing label", "label")
+                ->sortable()
+                ->rules("max:50"),
+
+            Boolean::make("Featured")->sortable(),
 
             Select::make("Vocabulary")
                 ->options([

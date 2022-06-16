@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from "vue";
+import { Inertia } from "@inertiajs/inertia";
 
 import DashboardLayout from "@/Layouts/DashboardLayout.vue";
 import Welcome from "@/Jetstream/Welcome.vue";
@@ -7,6 +8,7 @@ import InertiaButton from "@/Jetstream/InertiaButton.vue";
 import JetDialogModal from "@/Jetstream/DialogModal.vue";
 import JetButton from "@/Jetstream/Button.vue";
 import JetSecondaryButton from "@/Jetstream/SecondaryButton.vue";
+import JetDangerButton from "@/Jetstream/DangerButton.vue";
 import { Link } from "@inertiajs/inertia-vue3";
 
 defineProps({
@@ -15,6 +17,7 @@ defineProps({
 });
 
 const selectingOrganisation = ref(false);
+const confirmingDelete = ref(null);
 
 const selectOrganisation = () => {
     selectingOrganisation.value = true;
@@ -22,6 +25,13 @@ const selectOrganisation = () => {
 
 const closeModal = () => {
     selectingOrganisation.value = false;
+};
+
+const deleteService = () => {
+    Inertia.delete(
+        route("dashboard.service.delete", { service: confirmingDelete.value })
+    );
+    confirmingDelete.value = false;
 };
 </script>
 
@@ -51,7 +61,7 @@ const closeModal = () => {
                 >
                     <thead class="bg-slate-200 dark:bg-gray-700">
                         <tr>
-                            <th scope="col" class="p-4">
+                            <!-- <th scope="col" class="p-4">
                                 <div class="flex items-center">
                                     <input
                                         id="checkbox-all"
@@ -62,7 +72,7 @@ const closeModal = () => {
                                         >checkbox</label
                                     >
                                 </div>
-                            </th>
+                            </th>-->
                             <th
                                 scope="col"
                                 class="py-3 px-6 text-left text-xs font-medium uppercase tracking-wider text-gray-700 dark:text-gray-400"
@@ -89,6 +99,9 @@ const closeModal = () => {
                                 Last verified
                             </th>
                             <th scope="col" class="w-0 p-4">
+                                <span class="sr-only">Delete</span>
+                            </th>
+                            <th scope="col" class="w-0 p-4">
                                 <span class="sr-only">View</span>
                             </th>
                             <th scope="col" class="w-0 p-4">
@@ -103,7 +116,7 @@ const closeModal = () => {
                             v-for="service in services"
                             class="hover:bg-green-100 dark:hover:bg-gray-700"
                         >
-                            <td class="w-4 p-4">
+                            <!--<td class="w-4 p-4">
                                 <div class="flex items-center">
                                     <input
                                         id="checkbox-table-1"
@@ -116,7 +129,7 @@ const closeModal = () => {
                                         >checkbox</label
                                     >
                                 </div>
-                            </td>
+                            </td>-->
                             <td
                                 class="whitespace-nowrap py-4 px-6 text-sm font-medium text-gray-800 dark:text-white"
                             >
@@ -144,6 +157,16 @@ const closeModal = () => {
                                 {{ service.assured_date }}
                             </td>
                             <td
+                                class="whitespace-nowrap py-4 px-1 text-right text-sm"
+                            >
+                                <button
+                                    @click="confirmingDelete = service.id"
+                                    class="rounded-2xl border-none bg-blue-100 px-4 py-3 font-medium hover:bg-blue-200"
+                                >
+                                    Delete
+                                </button>
+                            </td>
+                            <td
                                 class="whitespace-nowrap py-4 px-1 text-right text-sm font-medium"
                             >
                                 <a
@@ -153,7 +176,7 @@ const closeModal = () => {
                                             id: service.id,
                                         })
                                     "
-                                    class="rounded-2xl bg-blue-100 px-4 py-3 hover:bg-blue-200"
+                                    class="inline-block rounded-2xl bg-blue-100 px-4 py-3 hover:bg-blue-200"
                                     >View</a
                                 >
                             </td>
@@ -166,7 +189,7 @@ const closeModal = () => {
                                             id: service.id,
                                         })
                                     "
-                                    class="rounded-2xl bg-blue-100 px-4 py-3 hover:bg-blue-200"
+                                    class="inline-block rounded-2xl bg-blue-100 px-4 py-3 hover:bg-blue-200"
                                     >Edit</Link
                                 >
                             </td>
@@ -220,6 +243,27 @@ const closeModal = () => {
                 <JetSecondaryButton @click="closeModal">
                     Cancel
                 </JetSecondaryButton>
+            </template>
+        </JetDialogModal>
+
+        <JetDialogModal
+            :show="!!confirmingDelete"
+            @close="confirmingDelete = null"
+        >
+            <template #title
+                >Are you sure you want to delete this service?
+            </template>
+
+            <template #content> </template>
+
+            <template #footer>
+                <JetSecondaryButton @click="confirmingDelete = null">
+                    Cancel
+                </JetSecondaryButton>
+
+                <JetDangerButton @click="deleteService" class="ml-2">
+                    Delete
+                </JetDangerButton>
             </template>
         </JetDialogModal>
     </DashboardLayout>

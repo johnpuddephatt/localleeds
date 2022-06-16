@@ -1,5 +1,9 @@
 <template>
-    <div>
+    <div class="col-span-6 my-2 flex flex-row gap-4 sm:col-span-4">
+        <JetCheckbox :checked="free" id="free" name="free" v-model="free" />
+        <JetLabel for="free" value="This service is free" />
+    </div>
+    <div v-if="!free">
         <ul class="mt-1 divide-y rounded border" v-if="modelValue.length">
             <li
                 class="flex flex-row gap-4 p-4"
@@ -169,6 +173,31 @@
             </JetButton>
         </template>
     </JetDialogModal>
+
+    <JetDialogModal
+        :show="showDeleteCostOptionsModal"
+        @close="cancelDeleteCostOptionsModal"
+    >
+        <template #title> Remove cost options? </template>
+
+        <template #content>
+            Marking this service as free will remove all saved cost options. Are
+            you sure you want to continue?
+        </template>
+
+        <template #footer>
+            <JetSecondaryButton @click="cancelDeleteCostOptionsModal">
+                Cancel
+            </JetSecondaryButton>
+
+            <JetDangerButton
+                class="ml-3"
+                @click="confirmDeleteCostOptionsModal"
+            >
+                Remove cost options
+            </JetDangerButton>
+        </template>
+    </JetDialogModal>
 </template>
 <script setup>
 import { ref, watch, onMounted } from "vue";
@@ -179,19 +208,45 @@ import JetDialogModal from "@/Jetstream/DialogModal.vue";
 import JetButton from "@/Jetstream/Button.vue";
 import JetSelect from "@/Jetstream/Select.vue";
 import JetSecondaryButton from "@/Jetstream/SecondaryButton.vue";
+import JetDangerButton from "@/Jetstream/DangerButton.vue";
 
 const props = defineProps({
     modelValue: Array,
 });
 
 const form = ref(null);
+const free = ref(true);
 
 const emit = defineEmits(["update:modelValue"]);
+
+const showDeleteCostOptionsModal = ref(false);
 
 const addingCostNumber = ref(false);
 const currentlyEditingCost = ref(null);
 const costOptions = ref([]);
 const costOptionAlwaysValid = ref(true);
+
+const cancelDeleteCostOptionsModal = () => {
+    showDeleteCostOptionsModal.value = false;
+    free.value = false;
+};
+
+const confirmDeleteCostOptionsModal = () => {
+    showDeleteCostOptionsModal.value = false;
+    emit("update:modelValue", []);
+};
+
+watch(
+    () => free.value,
+    (newVal) => {
+        if (newVal == true && props.modelValue.length) {
+            showDeleteCostOptionsModal.value = true;
+        }
+        if (newVal == false) {
+            openCostModal();
+        }
+    }
+);
 
 onMounted(() => {
     costOptions.value = JSON.parse(JSON.stringify(props.modelValue));
@@ -240,6 +295,9 @@ const openCostModal = (key) => {
 const cancelCostModal = () => {
     costOptions.value = JSON.parse(JSON.stringify(props.modelValue));
     addingCostNumber.value = false;
+    if (!costOptions.value.length) {
+        free.value = true;
+    }
 };
 
 const saveCost = () => {
@@ -257,7 +315,9 @@ const removeCost = (key) => {
 };
 
 const formattedDate = (dateToBeFormatted) => {
-    return new Date(dateToBeFormatted).toISOString().split("T")[0];
+    if (dateToBeFormatted) {
+        return new Date(dateToBeFormatted).toISOString().split("T")[0];
+    }
 };
 </script>
 
