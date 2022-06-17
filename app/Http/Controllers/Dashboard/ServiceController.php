@@ -109,7 +109,8 @@ class ServiceController extends Controller
         return Inertia::render("Dashboard/Service/Form", [
             "service" => $service,
             "service_categories" => Taxonomy::where("type", "service_category")
-                ->select("id", "name")
+                ->select("id", "label")
+                ->orderBy("label")
                 ->get(),
             "attending_types" => config("taxonomies.attending_types"),
             "attending_accesses" => config("taxonomies.attending_accesses"),
