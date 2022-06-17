@@ -217,6 +217,7 @@ watch(
                             <JetListbox
                                 id="service_category"
                                 v-model="form.service_categories"
+                                value="label"
                                 class="mt-1 block"
                                 :data="props.service_categories"
                             />

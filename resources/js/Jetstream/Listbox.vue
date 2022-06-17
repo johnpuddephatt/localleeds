@@ -13,7 +13,7 @@
                             v-if="selectedValues.length < 3"
                             v-for="(entry, key) in selectedValues"
                         >
-                            {{ data.find((item) => item.id == entry)?.name
+                            {{ data.find((item) => item.id == entry)?.[value]
                             }}<span v-if="key + 1 < selectedValues.length"
                                 >,
                             </span>
@@ -42,7 +42,7 @@
                             v-slot="{ active, selected }"
                             v-for="entry in data"
                             :key="entry.name"
-                            :value="entry.id"
+                            :value="entry[key]"
                             as="template"
                         >
                             <li
@@ -60,7 +60,7 @@
                                             : 'font-normal',
                                         'block truncate',
                                     ]"
-                                    >{{ entry.name }}</span
+                                    >{{ entry[value] }}</span
                                 >
                                 <span
                                     v-if="selected"
@@ -94,6 +94,8 @@ import { CheckIcon, SelectorIcon } from "@heroicons/vue/solid";
 const props = defineProps({
     modelValue: Array,
     data: Array,
+    key: { type: String, default: "id" },
+    value: { type: String, default: "name" },
 });
 
 const emit = defineEmits(["update:modelValue"]);
