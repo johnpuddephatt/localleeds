@@ -15,6 +15,7 @@ return [
         "online" => "Online",
         "venue" => "Venue",
         "home visit" => "Home visit",
+        "outdoors" => "Outdoors",
     ],
     "deliverable_types" => [
         "Activities" => "Activities",
