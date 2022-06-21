@@ -53,8 +53,8 @@ const form = useForm({
     deliverable_type: props.service?.deliverable_type ?? "Advice",
     languages: props.service?.languages ?? ["en"],
 
-    attending_type: props.service?.attending_type ?? "venue",
-    attending_access: props.service?.attending_access ?? "drop-in",
+    attending_type: props.service?.attending_type ?? null,
+    attending_access: props.service?.attending_access ?? null,
     wait_time: props.service?.wait_time ?? null,
     referral_process: props.service?.referral_process ?? null,
 
@@ -355,7 +355,7 @@ watch(
                             <JetSelect
                                 id="attending_type"
                                 v-model="form.attending_type"
-                                :options="attending_types"
+                                :options="{ null: '', ...attending_types }"
                                 class="mt-1 block w-full"
                             />
                             <JetInputError
@@ -373,7 +373,7 @@ watch(
                             <JetSelect
                                 id="attending_access"
                                 v-model="form.attending_access"
-                                :options="attending_accesses"
+                                :options="{ null: '', ...attending_accesses }"
                                 class="mt-1 block w-full"
                             />
                             <JetInputError

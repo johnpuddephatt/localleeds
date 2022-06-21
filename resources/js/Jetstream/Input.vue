@@ -14,7 +14,12 @@ onMounted(() => {
         input.value.focus();
     }
     if (input.value.dataset.customValidity) {
-        input.value.setCustomValidity(input.value.dataset.customValidity);
+        input.value.addEventListener("invalid", () => {
+            input.value.setCustomValidity(input.value.dataset.customValidity);
+        });
+        input.value.addEventListener("input", () => {
+            input.value.setCustomValidity("");
+        });
     }
 });
 
