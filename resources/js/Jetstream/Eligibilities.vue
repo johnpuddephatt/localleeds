@@ -270,7 +270,7 @@ watch(
             showDeleteEligibilitiesModal.value = true;
         }
 
-        if (newVal == false) {
+        if (newVal == false && !props.modelValue.length) {
             openEligibilityModal();
         }
     }
