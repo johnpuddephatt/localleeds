@@ -205,6 +205,7 @@ const eligibilityOptions = ref([]);
 
 onMounted(() => {
     eligibilityOptions.value = JSON.parse(JSON.stringify(props.modelValue));
+    open_to_all.value = props.modelValue.length ? false : true;
 });
 
 watch(
