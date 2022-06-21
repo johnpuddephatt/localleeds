@@ -36,7 +36,7 @@ const servicesAtLocation = computed(() => {
     <div class="relative pt-[120%] md:pt-[75%]">
         <l-map
             v-model="zoom"
-            :maxZoom="12"
+            :maxZoom="18"
             :minZoom="10"
             :center="[53.8351134, -1.4990645]"
             class="absolute inset-0"

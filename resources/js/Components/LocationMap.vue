@@ -92,7 +92,7 @@ const select = (location) => {
             <l-map
                 ref="map"
                 v-model="zoom"
-                :maxZoom="14"
+                :maxZoom="18"
                 :minZoom="10"
                 :center="center"
                 :options="{ zoomControl: false }"
