@@ -81,7 +81,9 @@
                         v-model="contacts[currentlyEditingContact].phone.number"
                         id="contact_number"
                         required
-                        type="number"
+                        type="text"
+                        pattern="[0-9 ]+"
+                        data-custom-validity="Phone numbers can only contains numbers (0-9) and spaces"
                         class="mt-1 block w-3/4"
                     />
                 </div>

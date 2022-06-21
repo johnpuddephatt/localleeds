@@ -117,6 +117,7 @@
                         v-model="
                             eligibilityOptions[currentlyEditingEligibility].tags
                         "
+                        value="label"
                         :data="eligibilities"
                         id="eligibility_tags"
                     />

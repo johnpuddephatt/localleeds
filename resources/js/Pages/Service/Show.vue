@@ -338,7 +338,10 @@ const print = () => {
                                     <div class="mt-2 text-sm">
                                         <a
                                             class="underline decoration-blue-200"
-                                            :href="`tel:${contact.phone.number}`"
+                                            :href="`tel:${contact.phone.number.replace(
+                                                ' ',
+                                                ''
+                                            )}`"
                                             >{{ contact.phone.number }}</a
                                         >
                                     </div>

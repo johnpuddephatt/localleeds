@@ -101,6 +101,7 @@ class ServiceController extends Controller
                 "service_category"
             )
                 ->select("id", "label")
+                ->orderBy("label")
                 ->get(),
         ]);
     }

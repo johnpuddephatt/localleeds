@@ -3,9 +3,9 @@
 return [
     "attending_accesses" => [
         "drop-in" => "Drop-in",
-        "referral" => "Referral",
         "appointment" => "Appointment",
         "membership" => "Membership",
+        "Pre-Booking Required" => "Pre-Booking Required",
         "Self-referral" => "Self-referral",
         "Referral from a professional" => "Referral from a professional",
         "Register/sign-up to attend" => "Register/sign-up to attend",

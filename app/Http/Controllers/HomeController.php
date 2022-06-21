@@ -37,6 +37,7 @@ class HomeController extends Controller
                     ])
                 )
                 ->select("id", "label")
+                ->orderBy("label")
                 ->get(),
             "homeFeaturedCategories" => \App\Models\Taxonomy::whereIn(
                 "id",

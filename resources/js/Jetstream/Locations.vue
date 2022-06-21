@@ -37,8 +37,8 @@
         </div>
 
         <JetSecondaryButton class="mt-2" @click="openLocationModal()"
-            >Add location</JetSecondaryButton
-        >
+            >{{ modelValue.length ? "Add another location" : "Add location" }}
+        </JetSecondaryButton>
     </div>
     <JetDialogModal :show="addingLocationNumber">
         <template #title>Add location details</template>
@@ -168,12 +168,10 @@ const updateAddress = (place) => {
     locationOptions.value[location].latitude = place.geometry.location.lat();
     locationOptions.value[location].longitude = place.geometry.location.lng();
     locationOptions.value[location].physical_address = {
-        address_1: getPlaceName(place),
-        city: getAddressComponent(place, "postal_town"),
-        state_province: getAddressComponent(
-            place,
-            "administrative_area_level_2"
-        ),
+        address_1: getPlaceName(place) ?? null,
+        city: getAddressComponent(place, "postal_town") ?? null,
+        state_province:
+            getAddressComponent(place, "administrative_area_level_2") ?? null,
         postal_code: getAddressComponent(place, "postal_code"),
         country: getAddressComponent(place, "country"),
     };
