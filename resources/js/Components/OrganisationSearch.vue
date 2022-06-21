@@ -34,7 +34,9 @@ const filteredOrganisations = computed(() => {
 
 const closeSearch = (event) => {
     if (!event.relatedTarget || event.relatedTarget.nodeName !== "A") {
-        searchOpen.value = false;
+        setTimeout(() => {
+            searchOpen.value = false;
+        }, 500);
     }
 };
 </script>
