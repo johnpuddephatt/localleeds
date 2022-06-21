@@ -19,7 +19,7 @@
                         <span v-for="(tag_id, key) in eligibility.tags">
                             {{
                                 eligibilities.find((item) => item.id == tag_id)
-                                    .name
+                                    .label
                             }}
 
                             <span

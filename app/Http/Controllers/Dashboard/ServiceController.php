@@ -72,7 +72,7 @@ class ServiceController extends Controller
                 "taxonomies.accessibilities"
             ),
             "eligibilities" => Taxonomy::where("type", "eligibility")
-                ->select("id", "name")
+                ->select("id", "name", "label")
                 ->get(),
         ]);
     }
@@ -120,7 +120,7 @@ class ServiceController extends Controller
             ),
             "languages" => config("taxonomies.languages"),
             "eligibilities" => Taxonomy::where("type", "eligibility")
-                ->select("id", "name")
+                ->select("id", "name", "label")
                 ->get(),
         ]);
     }
