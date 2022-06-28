@@ -32,6 +32,11 @@ Route::get("service/{service}", [
     "show",
 ])->name("service.show");
 
+Route::get("services/export", [
+    App\Http\Controllers\ServiceController::class,
+    "export",
+])->name("service.export");
+
 Route::get("services/{view?}", [
     App\Http\Controllers\ServiceController::class,
     "index",

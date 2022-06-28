@@ -9,6 +9,7 @@ use App\Traits\UuidTrait;
 use Carbon\Carbon;
 use App\Traits\GeographicalTrait;
 use GuzzleHttp\Client;
+use Illuminate\Database\Eloquent\Builder;
 
 class Service extends Model
 {
@@ -215,6 +216,17 @@ class Service extends Model
         }
     }
 
+    public function scopeApplyFilters($query, $input)
+    {
+        return $query
+            ->categoryFilter($input["service_category"] ?? null)
+            ->postcodeFilter(
+                $input["postcode"] ?? null,
+                $input["distance"] ?? 3 // distance
+            )
+            ->freefilter($input["free"] ?? null);
+    }
+
     public function scopeJoinLocations($query)
     {
         return $query
@@ -229,60 +241,77 @@ class Service extends Model
 
     public function scopeServiceDistance($query, $latitude, $longitude)
     {
-        return $query
-            ->joinLocations()
-            ->distance($latitude, $longitude, [
-                "table" => "locations",
-            ])
-            ->orderBy("distance");
+        if ($latitude && $longitude) {
+            return $query
+                ->joinLocations()
+                ->distance($latitude, $longitude, [
+                    "table" => "locations",
+                ])
+                ->orderBy("distance");
+        }
     }
 
-    public function scopeFreeFilter($query)
+    public function scopeFreeFilter($query, $free)
     {
-        return $query->doesntHave("costOptions");
+        if ($free) {
+            return $query->doesntHave("costOptions");
+        }
+    }
+
+    public function scopeCategoryFilter($query, $category)
+    {
+        if ($category) {
+            return $query->whereHas("categories", function (
+                Builder $query
+            ) use ($category) {
+                $query->where("id", $category);
+            });
+        }
     }
 
     public function scopePostcodeFilter($query, $postcode, $distance)
     {
-        $client = new Client(["http_errors" => false]);
-        $postcodesIoResponse = $client->request(
-            "GET",
-            "https://api.postcodes.io/postcodes/" . $postcode
-        );
+        if ($postcode) {
+            $client = new Client(["http_errors" => false]);
+            $postcodesIoResponse = $client->request(
+                "GET",
+                "https://api.postcodes.io/postcodes/" . $postcode
+            );
 
-        if ($postcodesIoResponse->getStatusCode() == 200) {
-            $postcodesIoResult = json_decode(
-                $postcodesIoResponse->getBody(),
-                true
-            )["result"];
+            if ($postcodesIoResponse->getStatusCode() == 200) {
+                $postcodesIoResult = json_decode(
+                    $postcodesIoResponse->getBody(),
+                    true
+                )["result"];
 
-            return $query
-                ->join(
-                    "location_service",
-                    "id",
-                    "=",
-                    "location_service.service_id"
-                )
-                ->join(
-                    "locations",
-                    "locations.id",
-                    "=",
-                    "location_service.location_id"
-                )
-                ->geofence(
-                    $postcodesIoResult["latitude"],
-                    $postcodesIoResult["longitude"],
-                    0,
-                    $distance,
-                    [
-                        "table" => "locations",
-                    ]
-                )
-                ->orderBy("distance");
+                return $query
+                    ->join(
+                        "location_service",
+                        "id",
+                        "=",
+                        "location_service.service_id"
+                    )
+                    ->join(
+                        "locations",
+                        "locations.id",
+                        "=",
+                        "location_service.location_id"
+                    )
+                    ->geofence(
+                        $postcodesIoResult["latitude"],
+                        $postcodesIoResult["longitude"],
+                        0,
+                        $distance,
+                        [
+                            "table" => "locations",
+                        ]
+                    )
+                    ->orderBy("distance");
+            }
+
+            session()->flash("flash.banner", "Postcode not found.");
+            session()->flash("flash.bannerStyle", "danger");
+            redirect(route("service.index"))->send();
         }
-
-        session()->flash("flash.banner", "Postcode not found.");
-        session()->flash("flash.bannerStyle", "danger");
-        redirect(route("service.index"))->send();
     }
 }

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Service;
 use Illuminate\Database\Eloquent\Builder;
+use App\Exports\ServicesExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ServiceController extends Controller
 {
@@ -29,31 +31,19 @@ class ServiceController extends Controller
         ]);
     }
 
+    public function export(Request $request)
+    {
+        return Excel::download(
+            new ServicesExport($request->input()),
+            "services.xlsx"
+        );
+    }
+
     public function index(Request $request, $view = "list")
     {
-        $services = \App\Models\Service::query();
-        $services = $services
-            ->with("organisation:id,name")
-            ->withCount("costOptions");
-
-        if ($request->input("service_category")) {
-            $services = $services->whereHas("categories", function (
-                Builder $query
-            ) use ($request) {
-                $query->where("id", $request->service_category);
-            });
-        }
-
-        if ($request->input("postcode")) {
-            $services = $services->postcodeFilter(
-                $request->input("postcode"),
-                $request->input("distance") ?? 3 // distance
-            );
-        }
-
-        if ($request->input("free") === "true") {
-            $services = $services->freefilter();
-        }
+        $services = \App\Models\Service::with("organisation:id,name")
+            ->withCount("costOptions")
+            ->applyFilters($request->input());
 
         if ($view == "list") {
             $services = $services
