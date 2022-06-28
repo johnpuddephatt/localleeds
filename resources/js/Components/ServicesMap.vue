@@ -16,7 +16,7 @@ import {
 } from "@vue-leaflet/vue-leaflet";
 import "leaflet/dist/leaflet.css";
 
-let props = defineProps({ services: Array });
+let props = defineProps({ services: Array, iframe: Boolean });
 
 const zoom = ref(10);
 
@@ -129,14 +129,16 @@ const servicesAtLocation = computed(() => {
                                 </svg>
                                 {{ entry.distance }} miles away
                             </div>
-                            <Link
+                            <component
+                                :is="iframe ? 'a' : Link"
+                                target="_blank"
                                 class="rounded-2xl bg-blue-200 px-6 py-2 font-semibold"
                                 :href="
                                     route('service.show', { service: entry.id })
                                 "
                             >
                                 View
-                            </Link>
+                            </component>
                         </div>
                     </div>
                 </div>

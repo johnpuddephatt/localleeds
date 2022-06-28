@@ -237,7 +237,9 @@ const totalServices = computed(() => {
                 >
                     No services found.
                 </div>
-                <Link
+                <component
+                    :is="form.iframe ? 'a' : Link"
+                    target="_blank"
                     :href="route('service.show', { id: service.id })"
                     v-for="service in services.data"
                     class="flex flex-col justify-between gap-4 rounded-lg bg-blue-100 p-8 md:flex-row"
@@ -301,12 +303,12 @@ const totalServices = computed(() => {
                             {{ service.distance }} miles away
                         </div>
                     </div>
-                </Link>
+                </component>
                 <pagination :links="services.links" />
             </template>
 
             <div v-if="view == 'map'">
-                <services-map :services="services" />
+                <services-map :iframe="form.iframe" :services="services" />
             </div>
 
             <svg-vue
