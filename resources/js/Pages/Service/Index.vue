@@ -72,8 +72,8 @@ const totalServices = computed(() => {
         />
 
         <div
-            class="container relative my-16 min-h-screen space-y-8 xl:max-w-4xl"
-            :class="{ 'pt-56': !form.iframe, 'py-12': form.iframe }"
+            class="container relative min-h-screen space-y-8 xl:max-w-4xl"
+            :class="{ 'my-16 pt-56': !form.iframe, 'py-12': form.iframe }"
         >
             <IndexTitle
                 v-if="!form.iframe"
