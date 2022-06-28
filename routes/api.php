@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware("auth:sanctum")->get("/user", function (Request $request) {
     return $request->user();
 });
+
+Route::get("/services/category/{category}", [
+    App\Http\Controllers\Api\ServiceController::class,
+    "index",
+])->name("api.service.category");

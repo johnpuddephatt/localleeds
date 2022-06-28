@@ -17,8 +17,9 @@ const form = useForm({
     postcode: props.filters.postcode?.toUpperCase() ?? null,
     service_category: props.filters.service_category ?? "",
     service_user: "",
-    distance: 3,
+    distance: props.filters.distance ?? 3,
     free: props.filters.free ?? false,
+    iframe: props.filters.iframe ? true : false,
 });
 
 const submitForm = () => {
@@ -47,35 +48,41 @@ const totalServices = computed(() => {
         <title>Search for a community-based service</title>
     </Head>
 
-    <FrontendLayout>
+    <FrontendLayout :iframe="form.iframe">
         <svg-vue
+            v-if="!form.iframe"
             class="pointer-events-none absolute right-0 top-[6.5rem] w-48 md:w-72"
             icon="searchindex_hero-upper-right"
         ></svg-vue>
         <svg-vue
-            class="top-4vh pointer-events-none absolute left-0 z-10 w-16 md:top-[35vh] md:w-60"
+            v-if="!form.iframe"
+            class="top-4vh pointer-events-none absolute left-0 -z-10 w-16 md:top-[35vh] md:w-60"
             icon="searchindex_hero-lower-left"
         ></svg-vue>
 
         <img
+            v-if="!form.iframe"
             class="absolute top-32 right-[28rem] hidden w-32 rounded-full md:block"
             src="/images/searchindex_hero-upper-right-1.jpg"
         />
         <img
+            v-if="!form.iframe"
             class="absolute right-72 top-48 hidden w-40 rounded-full md:block"
             src="/images/searchindex_hero-upper-right-2.jpg"
         />
 
         <div
-            class="container relative my-16 min-h-screen space-y-8 pt-56 xl:max-w-4xl"
+            class="container relative my-16 min-h-screen space-y-8 xl:max-w-4xl"
+            :class="{ 'pt-56': !form.iframe, 'py-12': form.iframe }"
         >
             <IndexTitle
+                v-if="!form.iframe"
                 :filters="filters"
                 :serviceCategories="service_categories"
             />
 
             <form @submit.prevent="submitForm" class="relative space-y-8">
-                <div class="rounded-2xl bg-blue-200 p-12">
+                <div v-if="!form.iframe" class="rounded-2xl bg-blue-200 p-12">
                     <div
                         class="flex flex-row flex-wrap items-center gap-4 md:flex-nowrap md:gap-6"
                     >
@@ -86,7 +93,7 @@ const totalServices = computed(() => {
                             aria-label="Maximum distance from postcode"
                         >
                             <option value="1">1 mile</option>
-                            <option value="2" selected>2 miles</option>
+                            <option value="2">2 miles</option>
                             <option value="3">3 miles</option>
                             <option value="4">4 miles</option>
                             <option value="5">5 miles</option>
@@ -109,6 +116,7 @@ const totalServices = computed(() => {
                     </div>
                 </div>
                 <div
+                    v-if="!form.iframe"
                     class="flex flex-col gap-4 rounded-2xl bg-blue-200 p-12 md:flex-row md:gap-8"
                 >
                     <select
@@ -147,7 +155,8 @@ const totalServices = computed(() => {
             </form>
 
             <div
-                class="flex flex-col items-center justify-between gap-4 pt-16 md:flex-row md:pt-32"
+                class="flex flex-col items-center justify-between gap-4 md:flex-row"
+                :class="{ 'pt-16 md:pt-32': !form.iframe }"
                 id="results"
             >
                 <h2 class="text-2xl font-semibold">
@@ -301,6 +310,7 @@ const totalServices = computed(() => {
             </div>
 
             <svg-vue
+                v-if="!form.iframe"
                 class="pointer-events-none absolute right-4 top-[100%] w-24 md:left-[100%]"
                 icon="searchindex-bottom-right"
             ></svg-vue>

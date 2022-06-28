@@ -8,20 +8,24 @@ import Banner from "@/Components/Banner.vue";
 
 defineProps({
     title: String,
+    iframe: Boolean,
 });
 </script>
 
 <template>
     <Banner />
-    <div class="bg-green-300 py-2 text-center text-sm font-semibold text-white">
+    <div
+        v-if="!iframe"
+        class="bg-green-300 py-2 text-center text-sm font-semibold text-white"
+    >
         <div class="container">
             This site is currently for demonstration purposes only.
         </div>
     </div>
-    <Header />
+    <Header v-if="!iframe" />
     <!-- Page Content -->
     <main>
         <slot />
     </main>
-    <Footer />
+    <Footer v-if="!iframe" />
 </template>
