@@ -33,6 +33,15 @@ const deleteService = () => {
     );
     confirmingDelete.value = false;
 };
+
+const truncate = (value, length = 30) => {
+    let newValue = value.substring(0, length);
+    console.log(value.length);
+    if (value.length > length) {
+        newValue += "...";
+    }
+    return newValue;
+};
 </script>
 
 <template>
@@ -133,13 +142,13 @@ const deleteService = () => {
                             <td
                                 class="whitespace-nowrap py-4 px-6 text-sm font-medium text-gray-800 dark:text-white"
                             >
-                                {{ service.name }}
+                                {{ truncate(service.name) }}
                             </td>
 
                             <td
                                 class="whitespace-nowrap py-4 px-6 text-sm font-medium text-gray-800 dark:text-white"
                             >
-                                {{ service.organisation.name }}
+                                {{ truncate(service.organisation.name) }}
                             </td>
 
                             <td
