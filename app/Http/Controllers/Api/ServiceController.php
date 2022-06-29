@@ -10,34 +10,26 @@ class ServiceController extends \App\Http\Controllers\Controller
 {
     public function index(Request $request, $category, $byLocation = null)
     {
-        $services = Service::query();
-        $services = $services->with("organisation:id,name");
-
-        if ($request->category) {
-            $services = $services->whereHas("categories", function (
-                Builder $query
-            ) use ($request) {
-                $query->where("id", $request->category);
-            });
-        }
+        $services = \App\Models\Service::with("organisation:id,name")
+            ->withCount("costOptions")
+            ->applyFilters($request->input());
 
         if ($byLocation) {
             $services = $services->joinLocations();
-            // $services = $services->with("locations");
-            // $services = $services->get()->map(function ($item) {
-            //     return [
-            //         "id" => $item->id,
-            //         "name" => $item->name,
-            //         "organisation" => $item->organisation->name,
-            //         "cost_options_count" => $item->cost_options_count,
-            //         "latitude" => $item->latitude,
-            //         "longitude" => $item->longitude,
-            //     ];
-            // });
-            $services = $services->get();
-        } else {
+
             $services = $services->with("locations");
-            $services = $services->get();
+
+            $services = $services->addSelect(["latitude", "longitude"]);
+            $services = $services->get()->map(function ($item) {
+                return [
+                    "id" => $item->id,
+                    "name" => $item->name,
+                    "organisation" => $item->organisation->name,
+                    "latitude" => $item->latitude,
+                    "longitude" => $item->longitude,
+                    "url" => $item->url,
+                ];
+            });
         }
 
         return response()->json($services);
