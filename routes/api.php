@@ -18,7 +18,7 @@ Route::middleware("auth:sanctum")->get("/user", function (Request $request) {
     return $request->user();
 });
 
-Route::get("/services/category/{category}", [
+Route::get("/services/category/{category}/{mapped?}", [
     App\Http\Controllers\Api\ServiceController::class,
     "index",
 ])->name("api.service.category");
