@@ -63,8 +63,14 @@ class ServiceController extends Controller
                 ->select("id", "label")
                 ->orderBy("label")
                 ->get(),
-            "attending_types" => config("taxonomies.attending_types"),
-            "attending_accesses" => config("taxonomies.attending_accesses"),
+            "attending_types" => Taxonomy::where("type", "attending_type")
+                ->select("id", "label")
+                ->orderBy("label")
+                ->get(),
+            "attending_accesses" => Taxonomy::where("type", "attending_access")
+                ->select("id", "label")
+                ->orderBy("label")
+                ->get(),
             "deliverable_types" => config("taxonomies.deliverable_types"),
             "organisation" => $organisation,
             "languages" => config("taxonomies.languages"),
@@ -90,6 +96,10 @@ class ServiceController extends Controller
         $service->languages = $service->languages()->pluck("language");
 
         $service->categories = $service->categories()->pluck("id");
+        $service->attending_types = $service->attending_types()->pluck("id");
+        $service->attending_accesses = $service
+            ->attending_accesses()
+            ->pluck("id");
 
         $service->load(
             "fundings",
@@ -112,8 +122,14 @@ class ServiceController extends Controller
                 ->select("id", "label")
                 ->orderBy("label")
                 ->get(),
-            "attending_types" => config("taxonomies.attending_types"),
-            "attending_accesses" => config("taxonomies.attending_accesses"),
+            "attending_types" => Taxonomy::where("type", "attending_type")
+                ->select("id", "label")
+                ->orderBy("label")
+                ->get(),
+            "attending_accesses" => Taxonomy::where("type", "attending_access")
+                ->select("id", "label")
+                ->orderBy("label")
+                ->get(),
             "deliverable_types" => config("taxonomies.deliverable_types"),
             "accessibility_for_disabilities" => config(
                 "taxonomies.accessibilities"
@@ -147,6 +163,8 @@ class ServiceController extends Controller
         $service->updateLocations($request->locations);
 
         $service->categories()->sync($request->service_categories);
+        $service->attending_accesses()->sync($request->attending_access);
+        $service->attending_types()->sync($request->attending_type);
 
         session()->flash("flash.banner", "Service succesfully created.");
         session()->flash("flash.bannerStyle", "success");
@@ -176,7 +194,15 @@ class ServiceController extends Controller
         $service->updateEligibilities($request->eligibilities);
         $service->updateLocations($request->locations);
 
-        $service->categories()->sync($request->service_categories);
+        $service
+            ->taxonomies()
+            ->sync(
+                array_merge(
+                    $request->service_categories,
+                    $request->attending_access,
+                    $request->attending_type
+                )
+            );
 
         return redirect()->route("dashboard.service.index");
     }

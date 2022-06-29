@@ -53,8 +53,8 @@ const form = useForm({
     deliverable_type: props.service?.deliverable_type ?? "Advice",
     languages: props.service?.languages ?? ["en"],
 
-    attending_type: props.service?.attending_type ?? null,
-    attending_access: props.service?.attending_access ?? null,
+    attending_type: props.service?.attending_types ?? [],
+    attending_access: props.service?.attending_accesses ?? [],
     wait_time: props.service?.wait_time ?? null,
     referral_process: props.service?.referral_process ?? null,
 
@@ -350,12 +350,13 @@ watch(
                         <div class="col-span-6 sm:col-span-4">
                             <JetLabel
                                 for="attending_type"
-                                value="Delivery type"
+                                value="Attending type"
                             />
-                            <JetSelect
+                            <JetListbox
                                 id="attending_type"
                                 v-model="form.attending_type"
-                                :options="{ null: '', ...attending_types }"
+                                value="label"
+                                :data="props.attending_types"
                                 class="mt-1 block w-full"
                             />
                             <JetInputError
@@ -370,10 +371,11 @@ watch(
                                 for="attending_access"
                                 value="Attendance access"
                             />
-                            <JetSelect
+                            <JetListbox
                                 id="attending_access"
                                 v-model="form.attending_access"
-                                :options="{ null: '', ...attending_accesses }"
+                                value="label"
+                                :data="props.attending_accesses"
                                 class="mt-1 block w-full"
                             />
                             <JetInputError

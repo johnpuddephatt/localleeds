@@ -116,9 +116,36 @@ class Service extends Model
         return $this->hasManyThrough(Phone::class, Contact::class);
     }
 
-    public function categories()
+    public function taxonomies()
     {
         return $this->morphToMany(Taxonomy::class, "link", "link_taxonomy");
+    }
+
+    public function categories()
+    {
+        return $this->morphToMany(
+            Taxonomy::class,
+            "link",
+            "link_taxonomy"
+        )->where("type", "=", "service_category");
+    }
+
+    public function attending_accesses()
+    {
+        return $this->morphToMany(
+            Taxonomy::class,
+            "link",
+            "link_taxonomy"
+        )->where("type", "=", "attending_access");
+    }
+
+    public function attending_types()
+    {
+        return $this->morphToMany(
+            Taxonomy::class,
+            "link",
+            "link_taxonomy"
+        )->where("type", "=", "attending_type");
     }
 
     public function updateLanguages($languages)

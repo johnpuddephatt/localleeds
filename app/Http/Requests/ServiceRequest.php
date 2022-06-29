@@ -32,8 +32,7 @@ class ServiceRequest extends FormRequest
             "status" => ["required"],
             "languages" => ["array"],
             "deliverable_type" => ["required"],
-            "attending_type" => ["required"],
-            "attending_access" => ["required"],
+
             "wait_time" => ["max:300"],
             "referral_process" => ["max:500"],
         ];

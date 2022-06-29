@@ -73,6 +73,8 @@ class Taxonomy extends Resource
                     "service_category" => "Service Category",
                     "eligibility" => "Eligibility",
                     "organisation_type" => "Organisation type",
+                    "attending_access" => "Attendance access",
+                    "attending_type" => "Attending type",
                 ])
                 ->displayUsingLabels()
                 ->sortable()

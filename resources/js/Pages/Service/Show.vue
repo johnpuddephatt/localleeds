@@ -27,6 +27,11 @@ const print = () => {
                 icon="service-top-left"
             ></svg-vue>
             <div class="md:w-3/5 md:border-r md:pr-12">
+                <div
+                    class="mb-6 inline-block rounded-2xl border-2 border-blue-100 p-3 px-6 font-medium"
+                >
+                    {{ service.deliverable_type }} service
+                </div>
                 <h1 class="mb-4 text-5xl font-semibold md:text-6xl">
                     {{ service.name }}
                 </h1>
@@ -34,14 +39,31 @@ const print = () => {
                     {{ service.organisation.name }}
                 </p>
                 <div class="mt-8 flex flex-col items-start gap-2 md:flex-row">
-                    <div class="rounded-2xl bg-green-100 p-3 px-6 font-medium">
-                        {{ service.deliverable_type }} service
+                    <div
+                        v-if="service.attending_accesses.length"
+                        class="rounded-2xl bg-blue-100 p-3 px-6 font-medium capitalize"
+                        v-for="attending_access in service.attending_accesses"
+                    >
+                        {{ attending_access.label }}
                     </div>
-                    <div class="rounded-2xl bg-blue-100 p-3 px-6 font-medium">
-                        <span class="capitalize">{{
-                            service.attending_access
-                        }}</span>
-                        access via
+                    <div
+                        v-else-if="service.attending_access"
+                        class="rounded-2xl bg-blue-100 p-3 px-6 font-medium capitalize"
+                    >
+                        {{ service.attending_access }}
+                    </div>
+
+                    <div
+                        v-if="service.attending_types.length"
+                        class="rounded-2xl bg-green-100 p-3 px-6 font-medium capitalize"
+                        v-for="attending_type in service.attending_types"
+                    >
+                        {{ attending_type.label }}
+                    </div>
+                    <div
+                        v-else-if="service.attending_type"
+                        class="rounded-2xl bg-green-100 p-3 px-6 font-medium capitalize"
+                    >
                         {{ service.attending_type }}
                     </div>
                 </div>

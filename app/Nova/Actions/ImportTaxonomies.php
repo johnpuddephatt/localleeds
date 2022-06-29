@@ -54,6 +54,8 @@ class ImportTaxonomies extends Action
                 "service_category" => "Service Category",
                 "eligibility" => "Eligibility",
                 "organisation_type" => "Organisation type",
+                "attending_access" => "Attendance access",
+                "attending_type" => "Attending type",
             ]),
             \Laravel\Nova\Fields\File::make("File")->rules("required"),
         ];

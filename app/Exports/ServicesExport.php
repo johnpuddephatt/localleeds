@@ -62,6 +62,7 @@ class ServicesExport implements FromCollection, WithHeadings
             "Deliverable type",
             "URL",
             "Email address",
+            "Category",
             "Fees",
             "Attending type",
             "Attending access",

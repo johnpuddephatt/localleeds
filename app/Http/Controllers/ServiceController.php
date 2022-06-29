@@ -21,6 +21,8 @@ class ServiceController extends Controller
             "reviews",
             "fundings",
             "eligibilities",
+            "attending_types:id,label",
+            "attending_accesses:id,label",
         ]);
 
         return Inertia::render("Service/Show", [
