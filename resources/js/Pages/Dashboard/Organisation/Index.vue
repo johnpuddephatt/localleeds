@@ -33,7 +33,7 @@ defineProps({
                 </div>
                 <table
                     v-else
-                    class="min-w-full table-fixed divide-y divide-gray-200 overflow-hidden rounded border shadow dark:divide-gray-700"
+                    class="w-full table-auto divide-y divide-gray-200 overflow-hidden rounded border shadow dark:divide-gray-700"
                 >
                     <thead class="bg-gray-200 dark:bg-gray-700">
                         <tr>

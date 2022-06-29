@@ -46,6 +46,8 @@ const print = () => {
                     >
                         {{ attending_access.label }}
                     </div>
+
+                    <!-- for legacy; can remove after December 2022 -->
                     <div
                         v-else-if="service.attending_access"
                         class="rounded-2xl bg-blue-100 p-3 px-6 font-medium capitalize"
@@ -60,6 +62,8 @@ const print = () => {
                     >
                         {{ attending_type.label }}
                     </div>
+
+                    <!-- for legacy; can remove after December 2022 -->
                     <div
                         v-else-if="service.attending_type"
                         class="rounded-2xl bg-green-100 p-3 px-6 font-medium capitalize"
