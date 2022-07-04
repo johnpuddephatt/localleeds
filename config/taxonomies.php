@@ -30,43 +30,39 @@ return [
     ],
     "accessibilities" => [
         [
-            "id" => "advice",
-            "name" => "Advice",
-        ],
-        [
-            "id" => "accessible-toilets",
+            "id" => "Accessible toilets",
             "name" => "Accessible toilets",
         ],
         [
-            "id" => "bus-nearby",
+            "id" => "Bus nearby",
             "name" => "Bus nearby",
         ],
         [
-            "id" => "dementia-friendly",
+            "id" => "Dementia friendly",
             "name" => "Dementia friendly",
         ],
         [
-            "id" => "disability-parking",
+            "id" => "Disability parking",
             "name" => "Disability parking",
         ],
         [
-            "id" => "guide-dog-friendly",
+            "id" => "Guide dog friendly",
             "name" => "Guide dog friendly",
         ],
         [
-            "id" => "step-free-access",
+            "id" => "Step-free access",
             "name" => "Step-free access",
         ],
         [
-            "id" => "visitor-parking",
+            "id" => "Visitor parking",
             "name" => "Visitor parking",
         ],
         [
-            "id" => "visually-impaired-friendly",
+            "id" => "Visually impaired friendly",
             "name" => "Visually impaired friendly",
         ],
         [
-            "id" => "wheelchair-access",
+            "id" => "Wheelchair access",
             "name" => "Wheelchair access",
         ],
     ],

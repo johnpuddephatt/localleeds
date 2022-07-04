@@ -44,20 +44,7 @@
         <template #title>Add location details</template>
 
         <template #content>
-            <form ref="form">
-                <div class="mt-4">
-                    <JetLabel for="location_name" value="Name" />
-                    <JetInput
-                        required
-                        maxlength="100"
-                        id="location_name"
-                        type="text"
-                        placeholder="e.g. North Field Community Centre"
-                        v-model="locationOptions[currentlyEditingLocation].name"
-                        class="mt-1 block w-3/4"
-                    />
-                </div>
-
+            <form ref="form" class="min-h-[20rem]">
                 <div class="mt-4">
                     <JetLabel for="location_address" value="Address" />
                     <GMapAutocomplete
@@ -82,7 +69,13 @@
                     >
                     </GMapAutocomplete>
                 </div>
-                <div class="mt-4 mb-44">
+                <div
+                    class="mt-4"
+                    v-if="
+                        locationOptions[currentlyEditingLocation]
+                            .physical_address
+                    "
+                >
                     <JetLabel
                         for="location_accessibilities"
                         value="Accessibility features"
@@ -91,11 +84,76 @@
                         id="location_accessibilities"
                         v-model="
                             locationOptions[currentlyEditingLocation]
-                                .accessibilities
+                                .accessibility_for_disabilities
                         "
                         class="mt-1 block w-3/4"
                         :data="accessibilities"
                     />
+                </div>
+                <div
+                    class="mt-4"
+                    v-if="
+                        locationOptions[currentlyEditingLocation]
+                            .physical_address
+                    "
+                >
+                    <JetLabel value="Opening times" />
+                    <div class="w-3/4 divide-y">
+                        <div
+                            class="flex flex-row gap-4 py-1"
+                            v-for="(schedule, index) in locationOptions[
+                                currentlyEditingLocation
+                            ].regular_schedules"
+                        >
+                            <JetSelect
+                                class="w-1/3 flex-1"
+                                :options="{
+                                    0: 'Monday',
+                                    1: 'Tuesday',
+                                    2: 'Wednesday',
+                                    3: 'Thursday',
+                                    4: 'Friday',
+                                    5: 'Saturday',
+                                    6: 'Sunday',
+                                }"
+                                v-model="schedule.weekday"
+                            />
+                            <JetInput
+                                required
+                                type="time"
+                                v-model="schedule.opens_at"
+                            />
+                            <JetInput
+                                required
+                                type="time"
+                                v-model="schedule.closes_at"
+                            />
+                            <button
+                                class="text-sm font-semibold"
+                                @click.prevent="
+                                    locationOptions[
+                                        currentlyEditingLocation
+                                    ].regular_schedules.splice(index, 1)
+                                "
+                            >
+                                remove
+                            </button>
+                        </div>
+                    </div>
+                    <JetSecondaryButton
+                        class="mt-2"
+                        @click.prevent="
+                            locationOptions[
+                                currentlyEditingLocation
+                            ].regular_schedules.push({
+                                weekday: 1,
+                                opens_at: '09:00',
+                                closes_at: '17:30',
+                            })
+                        "
+                    >
+                        Add new day
+                    </JetSecondaryButton>
                 </div>
             </form>
         </template>
@@ -116,10 +174,13 @@
     </JetDialogModal>
 </template>
 <script setup>
+import { usePage } from "@inertiajs/inertia-vue3";
+
 import { ref, watch, onMounted } from "vue";
 import JetLabel from "@/Jetstream/Label.vue";
 import JetInput from "@/Jetstream/Input.vue";
 import JetTextarea from "@/Jetstream/Textarea.vue";
+import JetSelect from "@/Jetstream/Select.vue";
 import JetListbox from "@/Jetstream/Listbox.vue";
 import JetDialogModal from "@/Jetstream/DialogModal.vue";
 import JetButton from "@/Jetstream/Button.vue";
@@ -165,6 +226,8 @@ const getAddressComponent = (place, component) => {
 
 const updateAddress = (place) => {
     let location = currentlyEditingLocation.value;
+    locationOptions.value[location].name = place.name;
+
     locationOptions.value[location].latitude = place.geometry.location.lat();
     locationOptions.value[location].longitude = place.geometry.location.lng();
     locationOptions.value[location].physical_address = {
@@ -175,6 +238,31 @@ const updateAddress = (place) => {
         postal_code: getAddressComponent(place, "postal_code"),
         country: getAddressComponent(place, "country"),
     };
+
+    if (
+        place.opening_hours &&
+        confirm(
+            "Opening hours for this location were found on Google. Do you want to automatically add them?"
+        ) == true
+    ) {
+        let schedule = [];
+        place.opening_hours.periods.forEach((period) => {
+            schedule.push({
+                service_id: usePage().props.value.service.id,
+                location_id: locationOptions.value[location].id,
+                weekday: period.open.day,
+                opens_at: `${period.open.time.substring(
+                    0,
+                    2
+                )}:${period.open.time.substring(2, 4)}`,
+                closes_at: `${period.close.time.substring(
+                    0,
+                    2
+                )}:${period.close.time.substring(2, 4)}`,
+            });
+        });
+        locationOptions.value[location].regular_schedules = schedule;
+    }
 };
 
 const openLocationModal = (key) => {
@@ -184,6 +272,14 @@ const openLocationModal = (key) => {
         });
     }
     currentlyEditingLocation.value = key ?? locationOptions.value.length - 1;
+    if (
+        locationOptions.value[currentlyEditingLocation.value]
+            .accessibility_for_disabilities == null
+    ) {
+        locationOptions.value[
+            currentlyEditingLocation.value
+        ].accessibility_for_disabilities = [];
+    }
     addingLocationNumber.value = true;
 };
 

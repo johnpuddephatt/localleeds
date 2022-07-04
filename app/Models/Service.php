@@ -225,20 +225,25 @@ class Service extends Model
                     "longitude" => $location["longitude"],
                 ]
             );
+
             $new_location->physicalAddress()->delete();
             $new_location
                 ->physicalAddress()
                 ->create($location["physical_address"]);
 
+            $new_location->regularSchedules()->delete();
+            $new_location
+                ->regularSchedules()
+                ->createMany($location["regular_schedules"]);
+
             $new_location->accessibilityForDisabilities()->delete();
 
-            if (isset($location["accessibilities"])) {
-                $new_location->accessibilityForDisabilities()->create([
-                    "accessibility" => implode(
-                        ", ",
-                        $location["accessibilities"]
-                    ),
-                ]);
+            if (isset($location["accessibility_for_disabilities"])) {
+                $new_location->accessibilityForDisabilities()->createMany(
+                    array_map(function ($accessibility) {
+                        return ["accessibility" => $accessibility];
+                    }, $location["accessibility_for_disabilities"])
+                );
             }
         }
     }

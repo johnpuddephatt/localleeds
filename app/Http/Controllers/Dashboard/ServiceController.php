@@ -108,12 +108,21 @@ class ServiceController extends Controller
             "contacts.phone",
             "eligibilities.tags",
             "costOptions",
-            "locations.physicalAddress"
+            "locations.physicalAddress",
+            "locations.regularSchedules",
+            "locations.accessibilityForDisabilities"
         );
 
         foreach ($service->eligibilities as $eligibility) {
             $eligibility->tags = $eligibility->tags()->pluck("id");
             $eligibility->unsetRelation("tags");
+        }
+
+        foreach ($service->locations as $location) {
+            $location->accessibility_for_disabilities = $location
+                ->accessibilityForDisabilities()
+                ->pluck("accessibility");
+            $location->unsetRelation("accessibilityForDisabilities");
         }
 
         return Inertia::render("Dashboard/Service/Form", [

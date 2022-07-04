@@ -18,7 +18,7 @@
 import { onMounted, ref } from "vue";
 
 defineProps({
-    modelValue: String,
+    modelValue: [Number, String],
     options: Object,
 });
 
