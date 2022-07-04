@@ -201,7 +201,12 @@ const submitForm = () => {
             </div>
 
             <div class="container grid grid-cols-1 gap-12 md:grid-cols-3">
-                <div
+                <Link
+                    :href="
+                        route('service.index', {
+                            service_category: homeCategory.id,
+                        })
+                    "
                     v-for="homeCategory in homeCategories"
                     class="border-t border-blue-200 py-6"
                 >
@@ -228,7 +233,7 @@ const submitForm = () => {
                         Lorem ipsum dolor sit amet, consectetuer adipiscing
                         elit, sed diam septa nonummy.
                     </p>
-                </div>
+                </Link>
             </div>
         </div>
     </FrontendLayout>
