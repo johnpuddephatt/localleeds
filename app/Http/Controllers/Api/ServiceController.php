@@ -5,12 +5,19 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Service;
+use App\Models\Taxonomy;
 
 class ServiceController extends \App\Http\Controllers\Controller
 {
-    public function index(Request $request, $category, $byLocation = null)
-    {
-        $services = \App\Models\Service::with("organisation:id,name")
+    public function index(
+        Request $request,
+        Taxonomy $category,
+        $byLocation = null
+    ) {
+        $services = $category
+            ->services()
+            ->with("organisation:id,name")
+
             ->withCount("costOptions")
             ->applyFilters($request->input());
 

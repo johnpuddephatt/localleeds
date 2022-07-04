@@ -36,6 +36,11 @@ class Taxonomy extends Model
         return $this->hasMany(Taxonomy::class);
     }
 
+    public function services()
+    {
+        return $this->morphedByMany(Service::class, "link", "link_taxonomy");
+    }
+
     public function parent()
     {
         return $this->belongsTo(Taxonomy::class);
